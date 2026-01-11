@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
-"""Create DataFrame from NumPy array."""
+"""Create a DataFrame from NumPy array."""
 
 import pandas as pd
 
 
 def from_numpy(array):
-    """Create DataFrame with columns A, B, C, ...
+    """Create a DataFrame with columns A, B, C, ...
     
     Args:
         array: NumPy array to convert
