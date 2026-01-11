@@ -6,10 +6,10 @@ import pandas as pd
 
 def rename(df):
     """Rename Timestamp column and convert to datetime.
-    
+
     Args:
         df: DataFrame with Timestamp column
-        
+
     Returns:
         DataFrame with Datetime column and only Close column
     """
