@@ -4,10 +4,10 @@
 
 def high(df):
     """Sort DataFrame by High price in descending order.
-    
+
     Args:
         df: Input DataFrame
-        
+
     Returns:
         DataFrame sorted by High price descending
     """
