@@ -1,12 +1,8 @@
 #!/usr/bin/env python3
-"""Plot a scatter plot."""
-
 import numpy as np
 import matplotlib.pyplot as plt
 
-
 def scatter():
-    """Plot men's height vs weight as magenta points."""
     mean = [69, 0]
     cov = [[15, 8], [8, 15]]
     np.random.seed(5)
