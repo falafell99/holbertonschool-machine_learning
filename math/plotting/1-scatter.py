@@ -2,6 +2,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
+
 def scatter():
     mean = [69, 0]
     cov = [[15, 8], [8, 15]]
