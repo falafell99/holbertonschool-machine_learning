@@ -4,10 +4,10 @@
 
 def summation_i_squared(n):
     """Calculate Σ from i=1 to n of i².
-    
+
     Args:
         n: Stopping condition
-        
+
     Returns:
         Integer sum of squares, or None if n invalid
     """
