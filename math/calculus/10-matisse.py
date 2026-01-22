@@ -6,7 +6,8 @@ def poly_derivative(poly):
     """Calculate derivative of polynomial given as coefficients list.
 
     Args:
-        poly: List of coefficients [a0, a1, a2, ...] for a0 + a1*x + a2*x² + ...
+        poly: List of coefficients [a0, a1, a2, ...]
+              for a0 + a1*x + a2*x² + ...
 
     Returns:
         List of coefficients of derivative, or None if invalid input
