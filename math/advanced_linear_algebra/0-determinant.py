@@ -16,7 +16,9 @@ def determinant(matrix):
         ValueError: If matrix is not square
     """
     # Check if matrix is list of lists
-    if not isinstance(matrix, list) or not all(isinstance(row, list) for row in matrix):
+    if not isinstance(matrix, list):
+        raise TypeError("matrix must be a list of lists")
+    if not all(isinstance(row, list) for row in matrix):
         raise TypeError("matrix must be a list of lists")
 
     # Special case: 0x0 matrix
@@ -34,7 +36,9 @@ def determinant(matrix):
 
     # Base case: 2x2 matrix
     if n == 2:
-        return matrix[0][0] * matrix[1][1] - matrix[0][1] * matrix[1][0]
+        a, b = matrix[0][0], matrix[0][1]
+        c, d = matrix[1][0], matrix[1][1]
+        return a * d - b * c
 
     # Recursive case: Laplace expansion along first row
     det = 0
@@ -48,7 +52,7 @@ def determinant(matrix):
                     row.append(matrix[i][k])
             submatrix.append(row)
 
-        # Calculate minor with sign (-1)^(1+j+1) = (-1)^j
+        # Calculate minor with sign (-1)^j
         sign = 1 if j % 2 == 0 else -1
         det += sign * matrix[0][j] * determinant(submatrix)
 
