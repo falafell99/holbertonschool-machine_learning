@@ -3,12 +3,5 @@
 
 
 def np_shape(matrix):
-    """Return shape of numpy array.
-    
-    Args:
-        matrix: numpy.ndarray
-        
-    Returns:
-        Tuple representing array dimensions
-    """
+    """Return shape of numpy array."""
     return matrix.shape

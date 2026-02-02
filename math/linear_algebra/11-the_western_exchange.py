@@ -3,12 +3,5 @@
 
 
 def np_transpose(matrix):
-    """Transpose numpy array.
-    
-    Args:
-        matrix: numpy.ndarray
-        
-    Returns:
-        Transposed numpy array
-    """
+    """Transpose numpy array."""
     return matrix.T
