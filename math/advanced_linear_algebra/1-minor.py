@@ -85,7 +85,8 @@ def minor(matrix):
         raise TypeError("matrix must be a list of lists")
 
     # Check if matrix is empty (contains empty list or empty rows)
-    if matrix == [[]] or len(matrix) == 0 or any(len(row) == 0 for row in matrix):
+    if (matrix == [[]] or len(matrix) == 0 or
+            any(len(row) == 0 for row in matrix)):
         raise ValueError("matrix must be a non-empty square matrix")
 
     # Check if matrix is square
@@ -108,10 +109,10 @@ def minor(matrix):
                 if k == i:
                     continue
                 row = []
-                for l in range(n):
-                    if l == j:
+                for m in range(n):
+                    if m == j:
                         continue
-                    row.append(matrix[k][l])
+                    row.append(matrix[k][m])
                 submatrix.append(row)
 
             # Calculate determinant of submatrix
