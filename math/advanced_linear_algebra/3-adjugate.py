@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Calculate adjugate matrix of a matrix."""
 
+
 def determinant(matrix):
     """Calculate determinant of a square matrix.
 
@@ -56,6 +57,7 @@ def determinant(matrix):
         det += sign * matrix[0][j] * determinant(submatrix)
 
     return det
+
 
 def cofactor(matrix):
     """Calculate cofactor matrix of a matrix.
@@ -121,6 +123,7 @@ def cofactor(matrix):
         cofactor_matrix.append(cofactor_row)
 
     return cofactor_matrix
+
 
 def adjugate(matrix):
     """Calculate adjugate matrix of a matrix.
