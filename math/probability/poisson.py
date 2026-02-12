@@ -13,7 +13,8 @@ class Poisson:
             lambtha: Expected number of occurrences in a given time frame
 
         Raises:
-            ValueError: If lambtha is not positive or data has less than 2 points
+            ValueError: If lambtha is not positive or data has less than 2
+                       points
             TypeError: If data is not a list
         """
         if data is None:
