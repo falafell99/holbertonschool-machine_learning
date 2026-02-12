@@ -11,8 +11,8 @@ def definiteness(matrix):
                calculated
 
     Returns:
-        String: Positive definite, Positive semi-definite, Negative semi-definite,
-               Negative definite, or Indefinite
+        String: Positive definite, Positive semi-definite, Negative
+               semi-definite, Negative definite, or Indefinite
         None: If matrix is not valid or doesn't fit any category
 
     Raises:
