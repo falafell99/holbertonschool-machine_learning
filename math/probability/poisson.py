@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 """Poisson distribution class."""
-import math
 
 
 class Poisson:
@@ -42,7 +41,10 @@ class Poisson:
             k = int(k)
         if k < 0:
             return 0
-        e = math.exp(-self.lambtha)
-        numerator = e * (self.lambtha ** k)
-        denominator = math.factorial(k)
-        return numerator / denominator
+        
+        e = 2.718281828459045
+        factorial = 1
+        for i in range(1, k + 1):
+            factorial *= i
+        
+        return (e ** (-self.lambtha) * (self.lambtha ** k)) / factorial
