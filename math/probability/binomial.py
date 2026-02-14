@@ -39,3 +39,24 @@ class Binomial:
             p = 1 - (variance / mean)
             self.n = int(round(mean / p))
             self.p = float(mean / self.n)
+
+    def pmf(self, k):
+        """Calculate PMF value for k successes.
+
+        Args:
+            k: Number of successes
+
+        Returns:
+            PMF value for k
+        """
+        if not isinstance(k, int):
+            k = int(k)
+        if k < 0 or k > self.n:
+            return 0
+
+        # Calculate combination: n choose k
+        comb = 1
+        for i in range(1, k + 1):
+            comb *= (self.n - k + i) / i
+
+        return comb * (self.p ** k) * ((1 - self.p) ** (self.n - k))
