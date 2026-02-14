@@ -1,16 +1,16 @@
 #!/usr/bin/env python3
-"""Poisson distribution class."""
+"""
+Contains the Poisson class
+"""
 
 
 class Poisson:
-    """Represents a Poisson distribution."""
-
+    """
+    Class that represents a poisson distribution
+    """
     def __init__(self, data=None, lambtha=1.):
         """
-        Initialize Poisson distribution.
-        Args:
-            data (list): data to estimate the distribution.
-            lambtha (float): expected number of occurrences.
+        Initialize the class
         """
         if data is None:
             if lambtha <= 0:
@@ -25,13 +25,10 @@ class Poisson:
 
     def pmf(self, k):
         """
-        Calculate PMF value for k successes.
-        Args:
-            k (int): number of successes.
-        Returns:
-            float: PMF value for k.
+        Calculates the value of the PMF for a given number of successes
         """
-        k = int(k)
+        if not isinstance(k, int):
+            k = int(k)
         if k < 0:
             return 0
 
@@ -40,26 +37,23 @@ class Poisson:
         for i in range(1, k + 1):
             factorial *= i
 
-        return (self.lambtha ** k * e ** -self.lambtha) / factorial
+        return (e ** -self.lambtha) * (self.lambtha ** k) / factorial
 
     def cdf(self, k):
         """
-        Calculate CDF value for k successes.
-        Args:
-            k (int): number of successes.
-        Returns:
-            float: CDF value for k.
+        Calculates the value of the CDF for a given number of successes
         """
-        k = int(k)
+        if not isinstance(k, int):
+            k = int(k)
         if k < 0:
             return 0
 
         e = 2.718281828459045
-        cdf_sum = 0
+        sum_cdf = 0
         for i in range(k + 1):
             factorial = 1
             for j in range(1, i + 1):
                 factorial *= j
-            cdf_sum += (self.lambtha ** i) / factorial
+            sum_cdf += (self.lambtha ** i) / factorial
 
-        return e ** -self.lambtha * cdf_sum
+        return (e ** -self.lambtha) * sum_cdf
