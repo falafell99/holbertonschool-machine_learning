@@ -40,11 +40,11 @@ class Poisson:
             return 0
 
         e = 2.718281828459045
-        cdf_value = 0
+        cdf_sum = 0
         for i in range(k + 1):
             factorial = 1
             for j in range(1, i + 1):
                 factorial *= j
-            cdf_value += (self.lambtha ** i) / factorial
+            cdf_sum += (self.lambtha ** i) / factorial
 
-        return (e ** -self.lambtha) * cdf_value
+        return (e ** -self.lambtha) * cdf_sum
