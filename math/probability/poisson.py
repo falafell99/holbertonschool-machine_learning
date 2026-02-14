@@ -31,7 +31,6 @@ class Poisson:
         if k < 0:
             return 0
 
-        # Holberton/ALX strictly requires this exact value for e
         e = 2.7182818285
         factorial = 1
         for i in range(1, k + 1):
@@ -47,13 +46,12 @@ class Poisson:
         if k < 0:
             return 0
 
-        # Holberton/ALX strictly requires this exact value for e
         e = 2.7182818285
-        sum_cdf = 0
+        cdf_sum = 0
         for i in range(k + 1):
             factorial = 1
             for j in range(1, i + 1):
                 factorial *= j
-            sum_cdf += (self.lambtha ** i) / factorial
+            cdf_sum += (self.lambtha ** i) / factorial
 
-        return (e ** -self.lambtha) * sum_cdf
+        return (e ** -self.lambtha) * cdf_sum
