@@ -1,21 +1,16 @@
 #!/usr/bin/env python3
-"""Exponential distribution class."""
+"""
+Contains the Exponential class
+"""
 
 
 class Exponential:
-    """Represents an exponential distribution."""
-
+    """
+    Class that represents an exponential distribution
+    """
     def __init__(self, data=None, lambtha=1.):
-        """Initialize exponential distribution.
-
-        Args:
-            data: List of data to estimate the distribution
-            lambtha: Expected number of occurrences in a given time frame
-
-        Raises:
-            ValueError: If lambtha is not positive or data has less than 2
-                       points
-            TypeError: If data is not a list
+        """
+        Initialize the class
         """
         if data is None:
             if lambtha <= 0:
@@ -26,34 +21,14 @@ class Exponential:
                 raise TypeError("data must be a list")
             if len(data) < 2:
                 raise ValueError("data must contain multiple values")
-            self.lambtha = 1 / (float(sum(data) / len(data)))
+            self.lambtha = float(len(data)) / sum(data)
 
     def pdf(self, x):
-        """Calculate PDF value for x.
-
-        Args:
-            x: Time period
-
-        Returns:
-            PDF value for x
+        """
+        Calculates the value of the PDF for a given time period
         """
         if x < 0:
             return 0
 
-        e = 2.718281828459045
+        e = 2.7182818285
         return self.lambtha * (e ** (-self.lambtha * x))
-
-    def cdf(self, x):
-        """Calculate CDF value for x.
-
-        Args:
-            x: Time period
-
-        Returns:
-            CDF value for x
-        """
-        if x < 0:
-            return 0
-
-        e = 2.718281828459045
-        return 1 - (e ** (-self.lambtha * x))
