@@ -1,41 +1,31 @@
 #!/usr/bin/env python3
-"""Plot stacked bar graph of fruit quantities."""
-
-import numpy as np
+"""Module to plot a stacked bar graph"""
 import matplotlib.pyplot as plt
+import numpy as np
 
 
 def bars():
-    """Plot stacked bar graph showing fruit per person."""
+    """Plots a stacked bar graph of fruit per person"""
     np.random.seed(5)
     fruit = np.random.randint(0, 20, (4, 3))
+    people = ['Farrah', 'Fred', 'Felicia']
+    fruits = ['apples', 'bananas', 'oranges', 'peaches']
+    colors = ['red', 'yellow', '#ff8000', '#ffe5b4']
 
     plt.figure(figsize=(6.4, 4.8))
 
-    # Define colors for each fruit
-    colors = ['red', 'yellow', '#ff8000', '#ffe5b4']
-    fruit_names = ['apples', 'bananas', 'oranges', 'peaches']
-    person_names = ['Farrah', 'Fred', 'Felicia']
-
-    # Initialize bottom for stacking
+    width = 0.5
     bottom = np.zeros(3)
 
-    # Plot each fruit type as stacked bar
-    for i in range(4):
-        plt.bar(person_names, fruit[i], width=0.5,
-                color=colors[i], label=fruit_names[i],
-                bottom=bottom)
-        bottom += fruit[i]  # Update bottom for next fruit
+    for i in range(len(fruit)):
+        plt.bar(people, fruit[i], width=width, bottom=bottom,
+                color=colors[i], label=fruits[i])
+        bottom += fruit[i]
 
-    # Set labels and title
-    plt.ylabel('Quantity of Fruit', fontsize='medium')
-    plt.title('Number of Fruit per Person', fontsize='medium')
-
-    # Set y-axis limits and ticks
-    plt.ylim(0, 80)
+    plt.ylabel('Quantity of Fruit')
+    plt.title('Number of Fruit per Person')
     plt.yticks(np.arange(0, 81, 10))
-
-    # Add legend
+    plt.ylim(0, 80)
     plt.legend()
 
     plt.show()
