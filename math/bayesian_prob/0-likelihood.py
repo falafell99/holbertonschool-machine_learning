@@ -28,10 +28,10 @@ def likelihood(x, n, P):
         return res
 
     # Binomial coefficient: n! / (x! * (n - x)!)
-    # We use integer division // to keep precision with large numbers
+    # Force to float to avoid numpy object array conversion with huge ints
     num = factorial(n)
     den = factorial(x) * factorial(n - x)
-    combination = num // den
+    combination = float(num // den)
 
     # Likelihood formula: nCr * P^x * (1-P)^(n-x)
     l_values = combination * (P ** x) * ((1 - P) ** (n - x))
