@@ -1,21 +1,12 @@
 #!/usr/bin/env python3
-"""Module that calculates the likelihood of obtaining data"""
+"""Module to calculate likelihood"""
 import numpy as np
 
 
 def likelihood(x, n, P):
     """
-    Calculates the likelihood of obtaining this data given various
-    hypothetical probabilities of developing severe side effects.
-
-    Args:
-        x (int): number of patients that develop severe side effects
-        n (int): total number of patients observed
-        P (numpy.ndarray): 1D array of hypothetical probabilities
-
-    Returns:
-        numpy.ndarray: 1D array containing the likelihood of obtaining the
-        data, x and n, for each probability in P
+    Calculates the likelihood of obtaining data given various
+    hypothetical probabilities
     """
     if not isinstance(n, int) or n <= 0:
         raise ValueError("n must be a positive integer")
@@ -29,16 +20,23 @@ def likelihood(x, n, P):
     if np.any((P < 0) | (P > 1)):
         raise ValueError("All values in P must be in the range [0, 1]")
 
-    # Вычисление биномиального коэффициента (комбинации) nCr
-    # Используем встроенный math.factorial и целочисленное деление,
-    # чтобы избежать переполнения float при огромных факториалах
-    import math
-    fact_n = math.factorial(n)
-    fact_x = math.factorial(x)
-    fact_nx = math.factorial(n - x)
-    combo = fact_n // (fact_x * fact_nx)
+    # Calculate factorial without math module
+    def factorial(n):
+        res = 1
+        for i in range(1, n + 1):
+            res *= i
+        return res
 
-    # Вычисляем правдоподобие по биномиальной формуле
-    likelihood_values = combo * (P ** x) * ((1 - P) ** (n - x))
+    # Binomial coefficient: n! / (x! * (n - x)!)
+    fact_n = factorial(n)
+    fact_x = factorial(x)
+    fact_nx = factorial(n - x)
+    
+    # nCr
+    combination = fact_n / (fact_x * fact_nx)
 
-    return likelihood_values
+    # Likelihood formula: nCr * P^x * (1-P)^(n-x)
+    # Using numpy broadcasting for P
+    l_values = combination * (P ** x) * ((1 - P) ** (n - x))
+
+    return l_values
