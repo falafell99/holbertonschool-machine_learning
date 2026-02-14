@@ -6,7 +6,12 @@ class Poisson:
     """Represents a Poisson distribution."""
 
     def __init__(self, data=None, lambtha=1.):
-        """Initialize Poisson distribution."""
+        """
+        Initialize Poisson distribution.
+        Args:
+            data (list): data to estimate the distribution.
+            lambtha (float): expected number of occurrences.
+        """
         if data is None:
             if lambtha <= 0:
                 raise ValueError("lambtha must be a positive value")
@@ -19,9 +24,14 @@ class Poisson:
             self.lambtha = float(sum(data)) / len(data)
 
     def pmf(self, k):
-        """Calculate PMF value for k successes."""
-        if not isinstance(k, int):
-            k = int(k)
+        """
+        Calculate PMF value for k successes.
+        Args:
+            k (int): number of successes.
+        Returns:
+            float: PMF value for k.
+        """
+        k = int(k)
         if k < 0:
             return 0
 
@@ -30,12 +40,17 @@ class Poisson:
         for i in range(1, k + 1):
             factorial *= i
 
-        return (e ** -self.lambtha) * (self.lambtha ** k) / factorial
+        return (self.lambtha ** k * e ** -self.lambtha) / factorial
 
     def cdf(self, k):
-        """Calculate CDF value for k successes."""
-        if not isinstance(k, int):
-            k = int(k)
+        """
+        Calculate CDF value for k successes.
+        Args:
+            k (int): number of successes.
+        Returns:
+            float: CDF value for k.
+        """
+        k = int(k)
         if k < 0:
             return 0
 
@@ -47,4 +62,4 @@ class Poisson:
                 factorial *= j
             cdf_sum += (self.lambtha ** i) / factorial
 
-        return (e ** -self.lambtha) * cdf_sum
+        return e ** -self.lambtha * cdf_sum
