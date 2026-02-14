@@ -42,3 +42,18 @@ class Exponential:
 
         e = 2.718281828459045
         return self.lambtha * (e ** (-self.lambtha * x))
+
+    def cdf(self, x):
+        """Calculate CDF value for x.
+
+        Args:
+            x: Time period
+
+        Returns:
+            CDF value for x
+        """
+        if x < 0:
+            return 0
+
+        e = 2.718281828459045
+        return 1 - (e ** (-self.lambtha * x))
