@@ -60,3 +60,25 @@ class Binomial:
             comb *= (self.n - k + i) / i
 
         return comb * (self.p ** k) * ((1 - self.p) ** (self.n - k))
+
+    def cdf(self, k):
+        """Calculate CDF value for k successes.
+
+        Args:
+            k: Number of successes
+
+        Returns:
+            CDF value for k
+        """
+        if not isinstance(k, int):
+            k = int(k)
+        if k < 0:
+            return 0
+        if k >= self.n:
+            return 1
+
+        cdf_value = 0
+        for i in range(k + 1):
+            cdf_value += self.pmf(i)
+
+        return cdf_value
