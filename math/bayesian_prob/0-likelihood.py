@@ -20,23 +20,20 @@ def likelihood(x, n, P):
     if np.any((P < 0) | (P > 1)):
         raise ValueError("All values in P must be in the range [0, 1]")
 
-    # Calculate factorial without math module
     def factorial(n):
+        """Helper to calculate factorial"""
         res = 1
         for i in range(1, n + 1):
             res *= i
         return res
 
     # Binomial coefficient: n! / (x! * (n - x)!)
-    fact_n = factorial(n)
-    fact_x = factorial(x)
-    fact_nx = factorial(n - x)
-    
-    # nCr
-    combination = fact_n / (fact_x * fact_nx)
+    # We use integer division // to keep precision with large numbers
+    num = factorial(n)
+    den = factorial(x) * factorial(n - x)
+    combination = num // den
 
     # Likelihood formula: nCr * P^x * (1-P)^(n-x)
-    # Using numpy broadcasting for P
     l_values = combination * (P ** x) * ((1 - P) ** (n - x))
 
     return l_values
