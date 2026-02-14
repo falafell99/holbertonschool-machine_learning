@@ -47,14 +47,7 @@ class Poisson:
             factorial *= i
 
         e = 2.718281828459045
-        exp_lambtha = 1.0
-        term = 1.0
-        for i in range(1, 100):
-            term *= self.lambtha / i
-            exp_lambtha += term
-        exp_neg_lambtha = 1.0 / exp_lambtha
-
-        return exp_neg_lambtha * (self.lambtha ** k) / factorial
+        return (e ** -self.lambtha) * (self.lambtha ** k) / factorial
 
     def cdf(self, k):
         """Calculate CDF value for k successes.
@@ -76,12 +69,6 @@ class Poisson:
             for j in range(1, i + 1):
                 fact *= j
             e = 2.718281828459045
-            exp_lambtha = 1.0
-            term = 1.0
-            for j in range(1, 100):
-                term *= self.lambtha / j
-                exp_lambtha += term
-            exp_neg_lambtha = 1.0 / exp_lambtha
-            cdf_value += exp_neg_lambtha * (self.lambtha ** i) / fact
+            cdf_value += (e ** -self.lambtha) * (self.lambtha ** i) / fact
 
         return cdf_value
