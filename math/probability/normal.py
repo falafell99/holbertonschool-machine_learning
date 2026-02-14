@@ -56,3 +56,18 @@ class Normal:
             x-value of z
         """
         return self.mean + (z * self.stddev)
+
+    def pdf(self, x):
+        """Calculate PDF value for x.
+
+        Args:
+            x: x-value
+
+        Returns:
+            PDF value for x
+        """
+        pi = 3.141592653589793
+        e = 2.718281828459045
+        exponent = -((x - self.mean) ** 2) / (2 * (self.stddev ** 2))
+        coefficient = 1 / (self.stddev * ((2 * pi) ** 0.5))
+        return coefficient * (e ** exponent)
