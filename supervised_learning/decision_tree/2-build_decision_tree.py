@@ -112,7 +112,7 @@ class Leaf(Node):
 
     def __str__(self):
         """Return string representation of leaf."""
-        return f"-> leaf [value={self.value}]"
+        return f"leaf [value={self.value}]"
 
 
 class Decision_Tree:
