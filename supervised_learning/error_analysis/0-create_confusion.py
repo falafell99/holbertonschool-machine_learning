@@ -7,8 +7,10 @@ def create_confusion_matrix(labels, logits):
     """Create confusion matrix.
 
     Args:
-        labels: one-hot numpy.ndarray of shape (m, classes) with correct labels
-        logits: one-hot numpy.ndarray of shape (m, classes) with predicted labels
+        labels: one-hot numpy.ndarray of shape (m, classes) with correct
+               labels
+        logits: one-hot numpy.ndarray of shape (m, classes) with predicted
+               labels
 
     Returns:
         confusion: numpy.ndarray of shape (classes, classes) with row indices
