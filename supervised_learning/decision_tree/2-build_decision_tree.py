@@ -32,16 +32,16 @@ class Node:
         return (new_text)
 
     def __str__(self):
-        """Returns the string representation of the node and its children"""
+        """Returns the string representation of the node"""
         if self.is_root:
-            out = "root [feature={}, threshold={}]\n".format(
-                self.feature, self.threshold)
+            out = f"root [feature={self.feature}, threshold={self.threshold}]\n"
         else:
-            out = "node [feature={}, threshold={}]\n".format(
-                self.feature, self.threshold)
+            out = f"-> node [feature={self.feature}, threshold={self.threshold}]\n"
 
-        out += self.left_child_add_prefix(self.left_child.__str__())
-        out += self.right_child_add_prefix(self.right_child.__str__())
+        if self.left_child:
+            out += self.left_child_add_prefix(self.left_child.__str__())
+        if self.right_child:
+            out += self.right_child_add_prefix(self.right_child.__str__())
         return out[:-1]
 
 
@@ -54,7 +54,7 @@ class Leaf:
 
     def __str__(self):
         """Returns the string representation of the leaf"""
-        return (f"-> leaf [value={self.value}]")
+        return f"-> leaf [value={self.value}]"
 
 
 class Decision_Tree:
