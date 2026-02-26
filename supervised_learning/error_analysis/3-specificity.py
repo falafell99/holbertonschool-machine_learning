@@ -18,9 +18,11 @@ def specificity(confusion):
     specificity_values = np.zeros(classes)
 
     for i in range(classes):
-        true_negatives = np.sum(confusion) - np.sum(confusion[i, :]) - np.sum(confusion[:, i]) + confusion[i, i]
-        false_positives = np.sum(confusion[:, i]) - confusion[i, i]
-        denominator = true_negatives + false_positives
-        specificity_values[i] = true_negatives / denominator
+        tp = confusion[i, i]
+        fn = np.sum(confusion[i, :]) - tp
+        fp = np.sum(confusion[:, i]) - tp
+        tn = np.sum(confusion) - tp - fn - fp
+        denominator = tn + fp
+        specificity_values[i] = tn / denominator
 
     return specificity_values
