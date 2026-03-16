@@ -126,3 +126,4 @@ class Decision_Tree:
     def __str__(self):
         """Return string representation of tree."""
         return self.root.__str__()
+ 
