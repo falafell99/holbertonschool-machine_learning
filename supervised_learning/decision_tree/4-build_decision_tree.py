@@ -89,33 +89,31 @@ class Node:
     def update_bounds_below(self):
         """Update bounds for this node and its children."""
         if self.is_root:
-            self.lower = {0: -np.inf}
-            self.upper = {0: np.inf}
+            self.lower = {}
+            self.upper = {}
+
+        if self.left_child:
+            self.left_child.lower = self.lower.copy()
+            self.left_child.upper = self.upper.copy()
+            if self.feature in self.left_child.upper:
+                self.left_child.upper[self.feature] = min(
+                    self.left_child.upper[self.feature], self.threshold
+                )
+            else:
+                self.left_child.upper[self.feature] = self.threshold
+
+        if self.right_child:
+            self.right_child.lower = self.lower.copy()
+            self.right_child.upper = self.upper.copy()
+            if self.feature in self.right_child.lower:
+                self.right_child.lower[self.feature] = max(
+                    self.right_child.lower[self.feature], self.threshold
+                )
+            else:
+                self.right_child.lower[self.feature] = self.threshold
 
         for child in [self.left_child, self.right_child]:
-            if child is not None:
-                child.lower = self.lower.copy()
-                child.upper = self.upper.copy()
-
-                if child == self.left_child:
-                    if self.feature in child.upper:
-                        child.upper[self.feature] = min(
-                            child.upper.get(self.feature, np.inf),
-                            self.threshold
-                        )
-                    else:
-                        child.upper[self.feature] = self.threshold
-                else:
-                    if self.feature in child.lower:
-                        child.lower[self.feature] = max(
-                            child.lower.get(self.feature, -np.inf),
-                            self.threshold
-                        )
-                    else:
-                        child.lower[self.feature] = self.threshold
-
-        for child in [self.left_child, self.right_child]:
-            if child is not None:
+            if child:
                 child.update_bounds_below()
 
 
