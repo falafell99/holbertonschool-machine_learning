@@ -311,18 +311,16 @@ class Decision_Tree:
         left_size = np.sum(left_population)
         right_size = np.sum(right_population)
 
-        left_unique = len(np.unique(self.target[left_population]))
-        right_unique = len(np.unique(self.target[right_population]))
-
+        # Leaf conditions
         is_left_leaf = (
             left_size < self.min_pop or
             node.depth + 1 >= self.max_depth or
-            left_unique == 1
+            len(np.unique(self.target[left_population])) == 1
         )
         is_right_leaf = (
             right_size < self.min_pop or
             node.depth + 1 >= self.max_depth or
-            right_unique == 1
+            len(np.unique(self.target[right_population])) == 1
         )
 
         if is_left_leaf:
@@ -342,6 +340,7 @@ class Decision_Tree:
         if self.split_criterion == "random":
             self.split_criterion = self.random_split_criterion
         else:
+            # Placeholder for Gini (or other) criterion to be defined later
             self.split_criterion = self.Gini_split_criterion
 
         self.explanatory = explanatory
@@ -353,12 +352,12 @@ class Decision_Tree:
         self.update_predict()
 
         if verbose == 1:
-            accuracy = self.accuracy(self.explanatory, self.target)
+            acc = self.accuracy(self.explanatory, self.target)
             print(f"""  Training finished.
 - Depth                     : {self.depth()}
 - Number of nodes           : {self.count_nodes()}
 - Number of leaves          : {self.count_nodes(only_leaves=True)}
-- Accuracy on training data : {accuracy}""")
+- Accuracy on training data : {acc}""")
 
     def accuracy(self, test_explanatory, test_target):
         """Calculate accuracy."""
