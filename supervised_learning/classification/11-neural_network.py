@@ -1,16 +1,16 @@
 #!/usr/bin/env python3
-"""Module that defines a neural network with cost calculation."""
+"""Module defining a neural network with cost calculation."""
 import numpy as np
 
 
 class NeuralNetwork:
-    """Class representing a neural network for binary classification."""
+    """Class representing a neural network."""
 
     def __init__(self, nx, nodes):
         """
-        Initializes the neural network.
+        Initializes neural network.
         nx: number of input features.
-        nodes: number of nodes in the hidden layer.
+        nodes: number of nodes in hidden layer.
         """
         if not isinstance(nx, int):
             raise TypeError("nx must be an integer")
@@ -31,37 +31,38 @@ class NeuralNetwork:
 
     @property
     def W1(self):
-        """Getter for __W1."""
+        """Getter __W1."""
         return self.__W1
 
     @property
     def b1(self):
-        """Getter for __b1."""
+        """Getter __b1."""
         return self.__b1
 
     @property
     def A1(self):
-        """Getter for __A1."""
+        """Getter __A1."""
         return self.__A1
 
     @property
     def W2(self):
-        """Getter for __W2."""
+        """Getter __W2."""
         return self.__W2
 
     @property
     def b2(self):
-        """Getter for __b2."""
+        """Getter __b2."""
         return self.__b2
 
     @property
     def A2(self):
-        """Getter for __A2."""
+        """Getter __A2."""
         return self.__A2
 
     def forward_prop(self, X):
         """
-        Calculates the forward propagation of the neural network.
+        Calculates neural network forward propagation.
+        X: input data.
         Updates and returns __A1 and __A2.
         """
         Z1 = np.dot(self.__W1, X) + self.__b1
@@ -72,13 +73,12 @@ class NeuralNetwork:
 
     def cost(self, Y, A):
         """
-        Calculates the cost of the model using logistic regression.
+        Calculates model cost.
         Y: correct labels.
-        A: activated output (prediction).
-        Returns the cost.
+        A: activated output.
+        Returns cost.
         """
         m = Y.shape[1]
-        # Binary Cross-Entropy formula formatted for PEP 8
         cost = -(1 / m) * np.sum(
             Y * np.log(A) + (1 - Y) * np.log(1.0000001 - A)
         )
