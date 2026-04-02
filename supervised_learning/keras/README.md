@@ -5,6 +5,7 @@ This directory contains projects and exercises related to building, training, an
 ## Tasks
 
 | Task | File | Description |
+| **9. Save and Load Model** | `9-model.py` | Functions to save and load entire Keras models. |
 | **8. Save Only the Best** | `8-train.py` | Automatically saves the model with the lowest validation loss. |
 | **7. Learning Rate Decay** | `7-train.py` | Implements learning rate decay using inverse time decay. |
 | **6. Early Stopping** | `6-train.py` | Implements early stopping based on validation loss. |
