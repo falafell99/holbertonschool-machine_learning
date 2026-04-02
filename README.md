@@ -31,3 +31,4 @@ License
 
 Educational purposes
 - **17. Privatize DeepNeuralNetwork**: Deep network class with private attributes and He initialization.
+- **18. DeepNeuralNetwork Forward Propagation**: Implement forward prop for L layers with private cache.
