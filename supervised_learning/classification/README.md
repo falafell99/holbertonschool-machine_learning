@@ -25,3 +25,4 @@ This project is part of the Holberton School Machine Learning curriculum. It cov
 - **22. Train DeepNeuralNetwork**: Complete the training method for multi-layer networks.
 - **23. Upgrade Train DeepNeuralNetwork**: Add verbose output and Matplotlib cost graphing.
 - **24. One-Hot Encode**: Implement function to convert labels to one-hot format.
+- **25. One-Hot Decode**: Implement function to convert one-hot matrix back to numeric labels.
