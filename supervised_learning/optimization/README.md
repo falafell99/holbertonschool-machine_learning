@@ -5,6 +5,7 @@ This directory contains projects and exercises focused on optimizing machine lea
 ## Tasks
 
 | Task | File | Description |
+| **14. Batch Norm Upgraded** | `14-batch_norm.py` | Implementation of a Batch Normalization layer in TensorFlow. |
 | **13. Batch Normalization** | `13-batch_norm.py` | Normalizes hidden layer outputs to stabilize training. |
 | **12. LR Decay Upgraded** | `12-learning_rate_decay.py` | Implements stepwise inverse time decay using TensorFlow schedules. |
 | **11. Learning Rate Decay** | `11-learning_rate_decay.py` | Implements stepwise inverse time decay for the learning rate. |
