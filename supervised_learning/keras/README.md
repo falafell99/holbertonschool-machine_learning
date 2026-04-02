@@ -5,6 +5,7 @@ This directory contains projects and exercises related to building, training, an
 ## Tasks
 
 | Task | File | Description |
+| **6. Early Stopping** | `6-train.py` | Implements early stopping based on validation loss. |
 | **5. Validate** | `5-train.py` | Trains the model with optional validation data. |
 | **4. Train** | `4-train.py` | Trains the Keras model using `fit` with mini-batch GD. |
 | **3. One Hot** | `3-one_hot.py` | Converts label vectors to one-hot matrices using Keras utils. |
