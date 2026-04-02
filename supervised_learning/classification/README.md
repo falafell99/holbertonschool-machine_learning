@@ -11,3 +11,4 @@ This project is part of the Holberton School Machine Learning curriculum. It cov
 - **5. Neuron Gradient Descent**: Implement the gradient_descent method to update W and b.
 - **6. Train Neuron**: Implement the train method with loop and error handling.
 - **7. Upgrade Train Neuron**: Add verbose logging and Matplotlib graphing functionality.
+- **8. NeuralNetwork**: Define a neural network class with one hidden layer and correct initialization.
