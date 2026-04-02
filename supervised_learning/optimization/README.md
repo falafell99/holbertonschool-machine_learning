@@ -5,6 +5,7 @@ This directory contains projects and exercises focused on optimizing machine lea
 ## Tasks
 
 | Task | File | Description |
+| **8. RMSProp Upgraded** | `8-RMSProp.py` | Sets up an RMSProp optimizer using the TensorFlow Keras API. |
 | **7. RMSProp** | `7-RMSProp.py` | Implements RMSProp optimization for adaptive learning rates. |
 | **6. Momentum Upgraded** | `6-momentum.py` | Sets up a Momentum optimizer using the TensorFlow Keras API. |
 | **5. Momentum** | `5-momentum.py` | Updates variables using Momentum optimization to accelerate convergence. |
