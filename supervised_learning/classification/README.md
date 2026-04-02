@@ -9,3 +9,4 @@ This project is part of the Holberton School Machine Learning curriculum. It cov
 - **3. Neuron Cost**: Implement the cost method using logistic regression (binary cross-entropy).
 - **4. Evaluate Neuron**: Add evaluate method to return binary predictions and cost.
 - **5. Neuron Gradient Descent**: Implement the gradient_descent method to update W and b.
+- **6. Train Neuron**: Implement the train method with loop and error handling.
