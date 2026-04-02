@@ -13,3 +13,4 @@ This project is part of the Holberton School Machine Learning curriculum. It cov
 - **7. Upgrade Train Neuron**: Add verbose logging and Matplotlib graphing functionality.
 - **8. NeuralNetwork**: Define a neural network class with one hidden layer and correct initialization.
 - **9. Privatize NeuralNetwork**: Privatize all NN attributes and add getters.
+- **10. NeuralNetwork Forward Propagation**: Implement forward propagation for a two-layer network.
