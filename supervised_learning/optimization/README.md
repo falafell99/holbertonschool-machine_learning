@@ -5,6 +5,7 @@ This directory contains projects and exercises focused on optimizing machine lea
 ## Tasks
 
 | Task | File | Description |
+| **12. LR Decay Upgraded** | `12-learning_rate_decay.py` | Implements stepwise inverse time decay using TensorFlow schedules. |
 | **11. Learning Rate Decay** | `11-learning_rate_decay.py` | Implements stepwise inverse time decay for the learning rate. |
 | **10. Adam Upgraded** | `10-Adam.py` | Sets up an Adam optimizer using the TensorFlow Keras API. |
 | **9. Adam** | `9-Adam.py` | Implements the Adam optimization algorithm (Momentum + RMSProp). |
