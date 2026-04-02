@@ -17,8 +17,6 @@ def create_mini_batches(X, Y, batch_size):
     mini_batches = []
 
     for i in range(0, m, batch_size):
-        # Слайсинг в Python сам позаботится о последнем батче, 
-        # если он окажется меньше batch_size
         X_batch = X_shuffled[i:i + batch_size]
         Y_batch = Y_shuffled[i:i + batch_size]
         mini_batches.append((X_batch, Y_batch))
