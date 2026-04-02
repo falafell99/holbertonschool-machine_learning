@@ -5,6 +5,7 @@ This directory contains projects and exercises focused on optimizing machine lea
 ## Tasks
 
 | Task | File | Description |
+| **2. Shuffle Data** | `2-shuffle_data.py` | Randomly shuffles two matrices while maintaining row correspondence. |
 | **1. Normalize** | `1-normalize.py` | Standardizes a matrix using provided mean and standard deviation. |
 | :--- | :--- | :--- |
 | **0. Normalization Constants** | `0-norm_constants.py` | Calculates the mean and standard deviation of each feature in a matrix. |
