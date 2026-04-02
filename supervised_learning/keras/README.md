@@ -5,6 +5,7 @@ This directory contains projects and exercises related to building, training, an
 ## Tasks
 
 | Task | File | Description |
+| **12. Test** | `12-test.py` | Evaluates a Keras model on unseen test data. |
 | **11. Save and Load Configuration** | `11-config.py` | Functions to save and load model architecture as JSON. |
 | **10. Save and Load Weights** | `10-weights.py` | Functions to save and load only the weights of a Keras model. |
 | **9. Save and Load Model** | `9-model.py` | Functions to save and load entire Keras models. |
