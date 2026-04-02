@@ -33,3 +33,4 @@ Educational purposes
 - **17. Privatize DeepNeuralNetwork**: Deep network class with private attributes and He initialization.
 - **18. DeepNeuralNetwork Forward Propagation**: Implement forward prop for L layers with private cache.
 - **20. Evaluate DeepNeuralNetwork**: Add evaluate method to return binary predictions and cost for DNN.
+- **21. DeepNeuralNetwork Gradient Descent**: Implement backpropagation for L layers.
