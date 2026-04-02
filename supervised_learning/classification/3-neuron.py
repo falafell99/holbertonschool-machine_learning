@@ -52,6 +52,8 @@ class Neuron:
         Returns the cost.
         """
         m = Y.shape[1]
-        # Binary Cross-Entropy formula
-        cost = -(1 / m) * np.sum(Y * np.log(A) + (1 - Y) * np.log(1.0000001 - A))
+        # Broken into multiple lines to stay under 79 characters
+        cost = -(1 / m) * np.sum(
+            Y * np.log(A) + (1 - Y) * np.log(1.0000001 - A)
+        )
         return cost
