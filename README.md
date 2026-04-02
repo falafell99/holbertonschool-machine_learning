@@ -30,3 +30,4 @@ falafell99
 License
 
 Educational purposes
+- **17. Privatize DeepNeuralNetwork**: Deep network class with private attributes and He initialization.
