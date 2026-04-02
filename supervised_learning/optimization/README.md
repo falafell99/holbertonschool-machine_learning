@@ -5,6 +5,7 @@ This directory contains projects and exercises focused on optimizing machine lea
 ## Tasks
 
 | Task | File | Description |
+| **1. Normalize** | `1-normalize.py` | Standardizes a matrix using provided mean and standard deviation. |
 | :--- | :--- | :--- |
 | **0. Normalization Constants** | `0-norm_constants.py` | Calculates the mean and standard deviation of each feature in a matrix. |
 
