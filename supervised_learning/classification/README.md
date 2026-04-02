@@ -18,3 +18,4 @@ This project is part of the Holberton School Machine Learning curriculum. It cov
 - **12. Evaluate NeuralNetwork**: Add evaluate method to return binary predictions and cost for NN.
 - **13. NeuralNetwork Gradient Descent**: Implement backpropagation to update W1, b1, W2, b2.
 - **14. Train NeuralNetwork**: Implement the train method with full forward/backward cycle.
+- **16. DeepNeuralNetwork**: Define DNN class with L, cache, and He-initialized weights.
