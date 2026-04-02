@@ -13,7 +13,7 @@ def create_batch_norm_layer(prev, n, activation):
     """
     init = tf.keras.initializers.VarianceScaling(mode='fan_avg')
 
-    # Оставляем bias=True (по умолчанию), чтобы не сбивать random seed
+    # Оставляем bias=True по умолчанию, чтобы совпал Random Seed
     dense = tf.keras.layers.Dense(
         units=n,
         kernel_initializer=init
