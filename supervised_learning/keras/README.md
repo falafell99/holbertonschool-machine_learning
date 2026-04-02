@@ -5,6 +5,7 @@ This directory contains projects and exercises related to building, training, an
 ## Tasks
 
 | Task | File | Description |
+| **2. Optimize** | `2-optimize.py` | Sets up Adam optimization with categorical crossentropy. |
 | **1. Input** | `1-input.py` | Builds a Keras model using the Functional API. |
 | **1. Input** | `1-input.py` | Builds a Keras model using the Functional API. |
 | :--- | :--- | :--- |
