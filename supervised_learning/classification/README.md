@@ -23,3 +23,4 @@ This project is part of the Holberton School Machine Learning curriculum. It cov
 - **19. DeepNeuralNetwork Cost**: Add cost method for multi-layer network.
 - **22. Train DeepNeuralNetwork**: Complete the training method for multi-layer networks.
 - **22. Train DeepNeuralNetwork**: Complete the training method for multi-layer networks.
+- **23. Upgrade Train DeepNeuralNetwork**: Add verbose output and Matplotlib cost graphing.
