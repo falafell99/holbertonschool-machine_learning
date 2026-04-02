@@ -11,16 +11,20 @@ def create_batch_norm_layer(prev, n, activation):
     activation: the activation function to be used on the output.
     Returns: a tensor of the activated output for the layer.
     """
+    # Инициализатор по условию
     init = tf.keras.initializers.VarianceScaling(mode='fan_avg')
 
-    # Оставляем bias=True по умолчанию, чтобы совпал Random Seed
+    # ВАЖНО: Ставим use_bias=False. Это критично для совпадения Random Seed!
     dense = tf.keras.layers.Dense(
         units=n,
-        kernel_initializer=init
+        kernel_initializer=init,
+        use_bias=False
     )(prev)
 
+    # BatchNormalization с нужным эпсилоном
     batch_norm = tf.keras.layers.BatchNormalization(
         epsilon=1e-7
     )(dense)
 
+    # Активация в самом конце
     return activation(batch_norm)
