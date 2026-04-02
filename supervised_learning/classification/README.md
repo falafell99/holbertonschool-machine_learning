@@ -7,3 +7,4 @@ This project is part of the Holberton School Machine Learning curriculum. It cov
 - **2. Neuron Forward Propagation**: Implement the forward_prop method using sigmoid activation.
 - **2. Neuron Forward Propagation**: Implement the forward_prop method using sigmoid activation.
 - **3. Neuron Cost**: Implement the cost method using logistic regression (binary cross-entropy).
+- **4. Evaluate Neuron**: Add evaluate method to return binary predictions and cost.
