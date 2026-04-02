@@ -20,3 +20,4 @@ This project is part of the Holberton School Machine Learning curriculum. It cov
 - **14. Train NeuralNetwork**: Implement the train method with full forward/backward cycle.
 - **16. DeepNeuralNetwork**: Define DNN class with L, cache, and He-initialized weights.
 - **17. DeepNeuralNetwork Forward Propagation**: Implement forward prop for L layers using sigmoid.
+- **19. DeepNeuralNetwork Cost**: Add cost method for multi-layer network.
