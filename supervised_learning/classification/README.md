@@ -19,3 +19,4 @@ This project is part of the Holberton School Machine Learning curriculum. It cov
 - **13. NeuralNetwork Gradient Descent**: Implement backpropagation to update W1, b1, W2, b2.
 - **14. Train NeuralNetwork**: Implement the train method with full forward/backward cycle.
 - **16. DeepNeuralNetwork**: Define DNN class with L, cache, and He-initialized weights.
+- **17. DeepNeuralNetwork Forward Propagation**: Implement forward prop for L layers using sigmoid.
