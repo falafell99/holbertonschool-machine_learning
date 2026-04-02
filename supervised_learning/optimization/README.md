@@ -5,6 +5,7 @@ This directory contains projects and exercises focused on optimizing machine lea
 ## Tasks
 
 | Task | File | Description |
+| **5. Momentum** | `5-momentum.py` | Updates variables using Momentum optimization to accelerate convergence. |
 | **4. Moving Average** | `4-moving_average.py` | Calculates EWMA with bias correction to smooth noisy data. |
 | **3. Mini-Batch** | `3-mini_batch.py` | Splits data into shuffled mini-batches for efficient training. |
 | **2. Shuffle Data** | `2-shuffle_data.py` | Randomly shuffles two matrices while maintaining row correspondence. |
