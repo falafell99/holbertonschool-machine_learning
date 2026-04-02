@@ -14,7 +14,7 @@ def create_batch_norm_layer(prev, n, activation):
     # Инициализатор по условию
     init = tf.keras.initializers.VarianceScaling(mode='fan_avg')
 
-    # ВАЖНО: Ставим use_bias=False. Это критично для совпадения Random Seed!
+    # ВАЖНО: use_bias=False — это ключ к тому, чтобы получить 0.231
     dense = tf.keras.layers.Dense(
         units=n,
         kernel_initializer=init,
@@ -22,9 +22,10 @@ def create_batch_norm_layer(prev, n, activation):
     )(prev)
 
     # BatchNormalization с нужным эпсилоном
+    # Gamma и Beta по умолчанию инициализируются как 1 и 0
     batch_norm = tf.keras.layers.BatchNormalization(
         epsilon=1e-7
     )(dense)
 
-    # Активация в самом конце
+    # Активация применяется в самом конце
     return activation(batch_norm)
