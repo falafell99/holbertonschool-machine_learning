@@ -5,6 +5,7 @@ This directory contains projects and exercises focused on optimizing machine lea
 ## Tasks
 
 | Task | File | Description |
+| **3. Mini-Batch** | `3-mini_batch.py` | Splits data into shuffled mini-batches for efficient training. |
 | **2. Shuffle Data** | `2-shuffle_data.py` | Randomly shuffles two matrices while maintaining row correspondence. |
 | **1. Normalize** | `1-normalize.py` | Standardizes a matrix using provided mean and standard deviation. |
 | :--- | :--- | :--- |
