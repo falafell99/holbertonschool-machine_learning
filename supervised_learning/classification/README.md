@@ -16,3 +16,4 @@ This project is part of the Holberton School Machine Learning curriculum. It cov
 - **10. NeuralNetwork Forward Propagation**: Implement forward propagation for a two-layer network.
 - **11. NeuralNetwork Cost**: Add cost method using binary cross-entropy for the NN.
 - **12. Evaluate NeuralNetwork**: Add evaluate method to return binary predictions and cost for NN.
+- **13. NeuralNetwork Gradient Descent**: Implement backpropagation to update W1, b1, W2, b2.
