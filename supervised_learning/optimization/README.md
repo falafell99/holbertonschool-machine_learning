@@ -5,6 +5,7 @@ This directory contains projects and exercises focused on optimizing machine lea
 ## Tasks
 
 | Task | File | Description |
+| **7. RMSProp** | `7-RMSProp.py` | Implements RMSProp optimization for adaptive learning rates. |
 | **6. Momentum Upgraded** | `6-momentum.py` | Sets up a Momentum optimizer using the TensorFlow Keras API. |
 | **5. Momentum** | `5-momentum.py` | Updates variables using Momentum optimization to accelerate convergence. |
 | **4. Moving Average** | `4-moving_average.py` | Calculates EWMA with bias correction to smooth noisy data. |
