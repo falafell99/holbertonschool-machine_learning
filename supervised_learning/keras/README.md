@@ -5,6 +5,7 @@ This directory contains projects and exercises related to building, training, an
 ## Tasks
 
 | Task | File | Description |
+| **13. Predict** | `13-predict.py` | Makes predictions using a Keras model. |
 | **12. Test** | `12-test.py` | Evaluates a Keras model on unseen test data. |
 | **11. Save and Load Configuration** | `11-config.py` | Functions to save and load model architecture as JSON. |
 | **10. Save and Load Weights** | `10-weights.py` | Functions to save and load only the weights of a Keras model. |
