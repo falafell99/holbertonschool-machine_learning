@@ -14,3 +14,4 @@ This project is part of the Holberton School Machine Learning curriculum. It cov
 - **8. NeuralNetwork**: Define a neural network class with one hidden layer and correct initialization.
 - **9. Privatize NeuralNetwork**: Privatize all NN attributes and add getters.
 - **10. NeuralNetwork Forward Propagation**: Implement forward propagation for a two-layer network.
+- **11. NeuralNetwork Cost**: Add cost method using binary cross-entropy for the NN.
