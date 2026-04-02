@@ -3,3 +3,4 @@ This project is part of the Holberton School Machine Learning curriculum. It cov
 
 ## Tasks
 - **0. Neuron**: Initialize a neuron with weights, bias, and activated output.
+- **1. Privatize Neuron**: Make attributes private and add getter functions.
