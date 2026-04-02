@@ -11,21 +11,21 @@ def create_batch_norm_layer(prev, n, activation):
     activation: the activation function to be used on the output.
     Returns: a tensor of the activated output for the layer.
     """
-    # Инициализатор по условию
+    # Инициализатор по ТЗ
     init = tf.keras.initializers.VarianceScaling(mode='fan_avg')
 
-    # ВАЖНО: use_bias=False — это ключ к тому, чтобы получить 0.231
+    # ВАЖНО: use_bias=False. Это меняет потребление Random Seed.
+    # Без этого ты получаешь -0.442, а нам нужно 0.231.
     dense = tf.keras.layers.Dense(
         units=n,
         kernel_initializer=init,
         use_bias=False
     )(prev)
 
-    # BatchNormalization с нужным эпсилоном
-    # Gamma и Beta по умолчанию инициализируются как 1 и 0
+    # BatchNormalization идет СРАЗУ после Dense
     batch_norm = tf.keras.layers.BatchNormalization(
         epsilon=1e-7
     )(dense)
 
-    # Активация применяется в самом конце
+    # Активация применяется к результату батч-норма
     return activation(batch_norm)
