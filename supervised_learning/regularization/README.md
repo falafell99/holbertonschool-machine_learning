@@ -4,6 +4,7 @@ This project explores various regularization techniques used in machine learning
 
 ## Tasks
 | Task | File | Description |
+| **1. Gradient Descent with L2** | `1-l2_reg_gradient_descent.py` | Implementation of backprop with L2 weight decay. |
 | --- | --- | --- |
 | **0. L2 Regularization Cost** | `0-l2_reg_cost.py` | Calculates the cost of a NN with L2 regularization. |
 
