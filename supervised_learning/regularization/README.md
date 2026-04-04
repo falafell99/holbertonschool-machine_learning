@@ -4,6 +4,7 @@ This project explores various regularization techniques used in machine learning
 
 ## Tasks
 | Task | File | Description |
+| **7. Early Stopping** | `7-early_stopping.py` | Logic to stop training when validation cost stops improving. |
 | **6. Keras Layer with Dropout** | `6-dropout_create_layer.py` | Implementation of a Dropout layer using Keras API. |
 | **5. Dropout Gradient Descent** | `5-dropout_gradient_descent.py` | Implementation of backprop with dropout masks. |
 | **4. Forward Prop with Dropout** | `4-dropout_forward_prop.py` | Implementation of inverted dropout in forward propagation. |
