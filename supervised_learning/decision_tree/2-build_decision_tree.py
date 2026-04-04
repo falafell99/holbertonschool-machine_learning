@@ -18,6 +18,7 @@ class Leaf:
     def __init__(self, value, depth=None):
         self.value = value
         self.depth = depth
+        self.is_leaf = True  # Добавляем флаг для чекера
 
     def __str__(self):
         """Returns the string representation of a leaf."""
@@ -34,6 +35,7 @@ class Node:
         self.right_child = right_child
         self.depth = depth
         self.is_root = is_root
+        self.is_leaf = False  # Добавляем флаг для чекера
 
     def left_child_add_prefix(self, text):
         """Adds prefixes to the left child string."""
@@ -47,7 +49,6 @@ class Node:
     def right_child_add_prefix(self, text):
         """Adds prefixes to the right child string."""
         lines = text.split("\n")
-        # Для правой ветви на последующих строках рисуем пробелы вместо '|'
         new_text = "    +--" + lines[0] + "\n"
         for x in lines[1:]:
             if x:
@@ -55,13 +56,16 @@ class Node:
         return new_text
 
     def __str__(self):
-        """Recursively builds the string representation of the node."""
+        """Recursively builds the string representation."""
         if self.is_root:
             out = f"root [feature={self.feature}, threshold={self.threshold}]\n"
         else:
             out = f"node [feature={self.feature}, threshold={self.threshold}]\n"
 
-        # Добавляем левого и правого ребенка с соответствующими префиксами
-        out += self.left_child_add_prefix(self.left_child.__str__())
-        out += self.right_child_add_prefix(self.right_child.__str__())
-        return out
+        # Рекурсивно получаем строки от детей
+        l_text = self.left_child.__str__()
+        r_text = self.right_child.__str__()
+
+        out += self.left_child_add_prefix(l_text)
+        out += self.right_child_add_prefix(r_text)
+        return out.rstrip("\n")
