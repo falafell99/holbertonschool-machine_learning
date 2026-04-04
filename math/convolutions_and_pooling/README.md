@@ -4,6 +4,7 @@ This project covers the fundamental mathematical operations behind Convolutional
 
 ## Tasks
 | Task | File | Description |
+| **2. Custom Padding** | `2-convolve_grayscale_padding.py` | Performs convolution with user-defined padding (ph, pw). |
 | **1. Same Convolution** | `1-convolve_grayscale_same.py` | Performs a same convolution (padding) keeping input dimensions. |
 | --- | --- | --- |
 | **0. Valid Convolution** | `0-convolve_grayscale_valid.py` | Performs a valid convolution on grayscale images using only 2 loops. |
