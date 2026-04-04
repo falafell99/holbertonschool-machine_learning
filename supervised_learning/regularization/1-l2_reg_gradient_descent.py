@@ -14,25 +14,22 @@ def l2_reg_gradient_descent(Y, weights, cache, alpha, lambtha, L):
     L: number of layers of the network.
     """
     m = Y.shape[1]
-    # Начинаем обратное распространение с последнего слоя (Softmax)
-    # dZ для Softmax + Cross-Entropy = A_L - Y
     dz = cache['A' + str(L)] - Y
 
     for i in range(L, 0, -1):
         A_prev = cache['A' + str(i - 1)]
         W_key = 'W' + str(i)
         b_key = 'b' + str(i)
-        
-        # Вычисляем градиенты с учетом L2 штрафа для W
+
+        # dw с учетом L2 штрафа: (grad / m) + (lambda / m) * W
         dw = (np.matmul(dz, A_prev.T) / m) + (lambtha / m) * weights[W_key]
         db = np.sum(dz, axis=1, keepdims=True) / m
 
         if i > 1:
-            # Вычисляем dz для следующего (предыдущего) слоя с активацией tanh
-            # Производная tanh(z) это (1 - tanh(z)^2) или (1 - A^2)
+            # Производная tanh: 1 - A^2
             W = weights[W_key]
             dz = np.matmul(W.T, dz) * (1 - np.square(A_prev))
 
-        # Обновляем веса "in place"
+        # Обновление весов "на месте"
         weights[W_key] -= alpha * dw
         weights[b_key] -= alpha * db
