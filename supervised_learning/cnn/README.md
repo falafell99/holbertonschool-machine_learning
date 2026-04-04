@@ -4,6 +4,7 @@ This directory contains implementations of fundamental components of Convolution
 
 ## Tasks
 | Task | File | Description |
+| **1. Pooling Forward Prop** | `1-pool_forward.py` | Performs forward propagation over a pooling layer (max/avg). |
 | --- | --- | --- |
 | **0. Convolutional Forward Prop** | `0-conv_forward.py` | Performs forward propagation over a convolutional layer. |
 
