@@ -20,24 +20,22 @@ def dropout_forward_prop(X, weights, L, keep_prob):
         b = weights['b' + str(i)]
         A_prev = cache['A' + str(i - 1)]
 
-        # Линейный проход
+        # Linear pass
         Z = np.matmul(W, A_prev) + b
 
         if i == L:
-            # Последний слой: Softmax
+            # Last layer: Softmax
             t = np.exp(Z)
             cache['A' + str(i)] = t / np.sum(t, axis=0, keepdims=True)
         else:
-            # Скрытые слои: Tanh + Dropout
+            # Hidden layers: Tanh + Dropout
             A = np.tanh(Z)
-            # Создаем маску (D = 1 там, где оставляем нейрон)
+            # Create mask (1 if keep, 0 if drop)
             D = np.random.rand(A.shape[0], A.shape[1])
             D = (D < keep_prob).astype(int)
-            
-            # Применяем маску и масштабируем (Inverted Dropout)
+            # Inverted Dropout: apply mask and scale
             A *= D
             A /= keep_prob
-            
             cache['D' + str(i)] = D
             cache['A' + str(i)] = A
 
