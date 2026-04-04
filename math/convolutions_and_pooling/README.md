@@ -4,6 +4,7 @@ This project covers the fundamental mathematical operations behind Convolutional
 
 ## Tasks
 | Task | File | Description |
+| **4. Convolution with Channels** | `4-convolve_channels.py` | Handles RGB images by summing across channels. |
 | **3. Strided Convolution** | `3-convolve_grayscale.py` | Performs convolution with custom padding and strides. |
 | **3. Strided Convolution** | `3-convolve_grayscale.py` | Performs convolution with custom padding and strides. |
 | **2. Custom Padding** | `2-convolve_grayscale_padding.py` | Performs convolution with user-defined padding (ph, pw). |
