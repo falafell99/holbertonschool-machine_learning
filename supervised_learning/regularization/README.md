@@ -4,6 +4,7 @@ This project explores various regularization techniques used in machine learning
 
 ## Tasks
 | Task | File | Description |
+| **6. Keras Layer with Dropout** | `6-dropout_create_layer.py` | Implementation of a Dropout layer using Keras API. |
 | **5. Dropout Gradient Descent** | `5-dropout_gradient_descent.py` | Implementation of backprop with dropout masks. |
 | **4. Forward Prop with Dropout** | `4-dropout_forward_prop.py` | Implementation of inverted dropout in forward propagation. |
 | **2. L2 Reg Cost (Keras)** | `2-l2_reg_cost.py` | Calculates the total cost for each layer using Keras model losses. |
