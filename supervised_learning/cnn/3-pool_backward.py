@@ -24,25 +24,20 @@ def pool_backward(dA, A_prev, kernel_shape, stride=(1, 1), mode='max'):
         for h in range(h_new):
             for w in range(w_new):
                 for f in range(c_new):
-                    # Границы окна
                     v_start = h * sh
                     v_end = v_start + kh
                     h_start = w * sw
                     h_end = h_start + kw
 
                     if mode == 'max':
-                        # Берем срез из оригинального входа
                         a_prev_slice = A_prev[i, v_start:v_end, h_start:h_end, f]
-                        # Создаем маску: 1 там, где был максимум
                         mask = (a_prev_slice == np.max(a_prev_slice))
-                        # Ошибка уходит только в "максимальный" пиксель
                         dA_prev[i, v_start:v_end, h_start:h_end, f] += (
                             mask * dA[i, h, w, f]
                         )
                     elif mode == 'avg':
-                        # Распределяем ошибку равномерно
-                        average_grad = dA[i, h, w, f] / (kh * kw)
-                        dist = np.ones((kh, kw)) * average_grad
+                        avg_grad = dA[i, h, w, f] / (kh * kw)
+                        dist = np.ones((kh, kw)) * avg_grad
                         dA_prev[i, v_start:v_end, h_start:h_end, f] += dist
 
     return dA_prev
