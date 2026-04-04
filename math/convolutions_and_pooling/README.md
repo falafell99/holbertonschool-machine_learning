@@ -4,6 +4,7 @@ This project covers the fundamental mathematical operations behind Convolutional
 
 ## Tasks
 | Task | File | Description |
+| **6. Pooling** | `6-pool.py` | Performs Max or Average pooling on multi-channel images. |
 | **5. Multiple Kernels** | `5-convolve.py` | Convolution using multiple kernels simultaneously. |
 | **4. Convolution with Channels** | `4-convolve_channels.py` | Handles RGB images by summing across channels. |
 | **3. Strided Convolution** | `3-convolve_grayscale.py` | Performs convolution with custom padding and strides. |
