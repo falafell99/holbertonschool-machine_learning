@@ -27,10 +27,6 @@ class Random_Forest():
         predictions = np.array([predict_func(explanatory)
                                 for predict_func in self.numpy_preds])
 
-        # Calculate the mode (most frequent) prediction for each example
-        # SciPy's mode is efficient, but we can do it purely with NumPy
-        # by iterating over columns (samples) or using advanced indexing.
-        
         # NumPy-only mode calculation across axis 0 (trees)
         def get_mode(col):
             values, counts = np.unique(col, return_counts=True)
@@ -56,8 +52,7 @@ class Random_Forest():
             T = Decision_Tree(max_depth=self.max_depth,
                               min_pop=self.min_pop,
                               seed=self.seed + i)
-            # Use random splitting as specified by the task description
-            # for the trees inside the random forest
+            # Use random splitting for the trees inside the forest
             T.fit(explanatory, target)
             self.numpy_preds.append(T.predict)
             depths.append(T.depth())
@@ -71,7 +66,7 @@ class Random_Forest():
             mean_leaves = np.array(leaves).mean()
             mean_acc = np.array(accuracies).mean()
             forest_acc = self.accuracy(self.explanatory, self.target)
-            
+
             print(f"  Training finished.")
             print(f"    - Mean depth                     : {mean_depth}")
             print(f"    - Mean number of nodes           : {mean_nodes}")
