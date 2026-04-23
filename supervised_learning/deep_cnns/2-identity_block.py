@@ -19,7 +19,7 @@ def identity_block(A_prev, filters):
         The activated output of the identity block.
     """
     F11, F3, F12 = filters
-    
+
     # Initialize weights using He Normal with seed=0
     initializer = K.initializers.HeNormal(seed=0)
 
