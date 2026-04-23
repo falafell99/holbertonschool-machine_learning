@@ -38,7 +38,8 @@ class Decision_Tree:
         def get_depth(node):
             if node.is_leaf:
                 return node.depth
-            return max(get_depth(node.left_child), get_depth(node.right_child))
+            return max(get_depth(node.left_child),
+                       get_depth(node.right_child))
         return get_depth(self.root)
 
     def count_nodes(self, only_leaves=False):
@@ -66,7 +67,8 @@ class Decision_Tree:
             print("  Training finished.")
             print(f"    - Depth                     : {self.depth()}")
             print(f"    - Number of nodes           : {self.count_nodes()}")
-            print(f"    - Number of leaves          : {self.count_nodes(True)}")
+            print(f"    - Number of leaves          : "
+                  f"{self.count_nodes(True)}")
             print(f"    - Accuracy on training data : "
                   f"{self.accuracy(self.explanatory, self.target)}")
 
@@ -76,33 +78,39 @@ class Decision_Tree:
 
     def grow_tree(self, node):
         """Recursively grows the decision tree."""
+        sub_pop = node.sub_population
+        target_sub = self.target[sub_pop]
+
         if (node.depth >= self.max_depth or
-                len(node.sub_population) <= self.min_pop or
-                len(np.unique(self.target[node.sub_population])) == 1):
+                len(sub_pop) <= self.min_pop or
+                len(np.unique(target_sub)) == 1):
             node.is_leaf = True
-            node.value = np.argmax(np.bincount(self.target[node.sub_population]))
+            node.value = np.argmax(np.bincount(target_sub))
             return
 
         feature, threshold = self.split_criterion_func(node)
         if feature is None:
             node.is_leaf = True
-            node.value = np.argmax(np.bincount(self.target[node.sub_population]))
+            node.value = np.argmax(np.bincount(target_sub))
             return
 
         node.feature = feature
         node.threshold = threshold
 
-        left_mask = (self.explanatory[:, feature])[node.sub_population] > threshold
-        left_sub = node.sub_population[left_mask]
-        right_sub = node.sub_population[np.logical_not(left_mask)]
+        feat_vals = (self.explanatory[:, feature])[sub_pop]
+        left_mask = feat_vals > threshold
+        left_sub = sub_pop[left_mask]
+        right_sub = sub_pop[np.logical_not(left_mask)]
 
         if len(left_sub) == 0 or len(right_sub) == 0:
             node.is_leaf = True
-            node.value = np.argmax(np.bincount(self.target[node.sub_population]))
+            node.value = np.argmax(np.bincount(target_sub))
             return
 
-        node.left_child = Node(depth=node.depth + 1, sub_population=left_sub)
-        node.right_child = Node(depth=node.depth + 1, sub_population=right_sub)
+        node.left_child = Node(depth=node.depth + 1,
+                               sub_population=left_sub)
+        node.right_child = Node(depth=node.depth + 1,
+                                sub_population=right_sub)
 
         self.grow_tree(node.left_child)
         self.grow_tree(node.right_child)
@@ -143,27 +151,27 @@ class Decision_Tree:
         if thresholds.size == 0:
             return np.array([0, 1.0])
 
-        # Представление классов через One-Hot (n, c)
+        # One-Hot encoding of classes (n, c)
         classes = np.unique(self.target)
         one_hot = (Y_node[:, None] == classes[None, :])
 
-        # Сравнение значений с порогами (n, t)
+        # Compare values with thresholds (n, t)
         gt = X_feat[:, None] > thresholds[None, :]
 
-        # Тензор Left_F формы (n, t, c)
+        # Tensor Left_F of shape (n, t, c)
         Left_F = gt[:, :, None] & one_hot[:, None, :]
 
-        # Статистика для левого потомка
+        # Statistics for the left child
         n_L_k = np.sum(Left_F, axis=0)
         n_L = np.sum(n_L_k, axis=1)
 
-        # Статистика для правого потомка
+        # Statistics for the right child
         total_class_counts = np.sum(one_hot, axis=0)
         n_R_k = total_class_counts[None, :] - n_L_k
         n_total = X_feat.shape[0]
         n_R = n_total - n_L
 
-        # Расчет Gini с игнорированием деления на ноль (когда потомок пуст)
+        # Gini calculation ignoring division by zero warnings
         with np.errstate(divide='ignore', invalid='ignore'):
             sum_pk2_L = np.sum((n_L_k / n_L[:, None])**2, axis=1)
             sum_pk2_R = np.sum((n_R_k / n_R[:, None])**2, axis=1)
@@ -171,7 +179,7 @@ class Decision_Tree:
             gini_L = np.nan_to_num(1 - sum_pk2_L)
             gini_R = np.nan_to_num(1 - sum_pk2_R)
 
-        # Усредненный Gini
+        # Weighted Gini
         gini_split = (n_L / n_total) * gini_L + (n_R / n_total) * gini_R
 
         best_idx = np.argmin(gini_split)
