@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Module to create an identity block for ResNet."""
-import tensorflow.keras as K
+from tensorflow import keras as K
 
 
 def identity_block(A_prev, filters):
@@ -20,11 +20,11 @@ def identity_block(A_prev, filters):
     """
     F11, F3, F12 = filters
     
-    # Инициализатор весов He Normal с фиксированным seed=0
+    # Initialize weights using He Normal with seed=0
     initializer = K.initializers.HeNormal(seed=0)
 
-    # --- Первый компонент основного пути ---
-    # 1x1 свертка для уменьшения размерности (bottleneck)
+    # --- First component of main path ---
+    # 1x1 convolution to reduce dimensionality (bottleneck)
     X = K.layers.Conv2D(
         filters=F11,
         kernel_size=(1, 1),
@@ -34,8 +34,8 @@ def identity_block(A_prev, filters):
     X = K.layers.BatchNormalization(axis=3)(X)
     X = K.layers.Activation('relu')(X)
 
-    # --- Второй компонент основного пути ---
-    # 3x3 свертка для извлечения признаков
+    # --- Second component of main path ---
+    # 3x3 convolution to extract features
     X = K.layers.Conv2D(
         filters=F3,
         kernel_size=(3, 3),
@@ -45,8 +45,8 @@ def identity_block(A_prev, filters):
     X = K.layers.BatchNormalization(axis=3)(X)
     X = K.layers.Activation('relu')(X)
 
-    # --- Третий компонент основного пути ---
-    # 1x1 свертка для восстановления размерности каналов
+    # --- Third component of main path ---
+    # 1x1 convolution to restore channel dimensions
     X = K.layers.Conv2D(
         filters=F12,
         kernel_size=(1, 1),
@@ -55,8 +55,8 @@ def identity_block(A_prev, filters):
     )(X)
     X = K.layers.BatchNormalization(axis=3)(X)
 
-    # --- Сложение и финальная активация ---
-    # Добавляем "Shortcut" (исходный вход A_prev) к результату сверток
+    # --- Addition and final activation ---
+    # Shortcut connection: adding the original input A_prev to the main path
     X = K.layers.Add()([X, A_prev])
     X = K.layers.Activation('relu')(X)
 
