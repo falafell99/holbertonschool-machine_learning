@@ -22,7 +22,6 @@ class Isolation_Random_Tree():
         self.min_pop = 1
 
     def __str__(self):
-        """Returns string representation."""
         return "Isolation_Random_Tree"
 
     def depth(self):
@@ -45,7 +44,6 @@ class Isolation_Random_Tree():
         return count(self.root)
 
     def update_bounds(self):
-        """Updates bounds of the tree nodes."""
         pass
 
     def get_leaves(self):
@@ -81,13 +79,13 @@ class Isolation_Random_Tree():
         return np.min(arr), np.max(arr)
 
     def random_split_criterion(self, node):
-        """Selects a random feature and threshold for splitting."""
+        """Selects feature & threshold, syncing exact RNG state."""
         feature = self.rng.integers(0, self.explanatory.shape[1])
-        feat_vals = self.explanatory[node.sub_population, feature]
-        values = np.unique(feat_vals)
-        if len(values) <= 1:
-            return feature, values[0] if len(values) > 0 else 0
-        threshold = self.rng.uniform(values[0], values[-1])
+        # Use np_extrema to find bounds without filtering unique values
+        bounds = self.np_extrema(
+            self.explanatory[node.sub_population, feature])
+        # Always consume exactly one float from the RNG stream
+        threshold = self.rng.uniform(bounds[0], bounds[1])
         return feature, threshold
 
     def get_leaf_child(self, node, sub_population):
@@ -106,13 +104,13 @@ class Isolation_Random_Tree():
         """Recursively fits a node based on isolation logic."""
         node.feature, node.threshold = self.random_split_criterion(node)
 
-        feat_vals = self.explanatory[node.sub_population, node.feature]
+        feat_vals = (self.explanatory[:, node.feature])[node.sub_population]
         left_mask = feat_vals > node.threshold
         left_population = node.sub_population[left_mask]
         right_population = node.sub_population[np.logical_not(left_mask)]
 
         is_left_leaf = (node.depth + 1 >= self.max_depth or
-                        len(left_population) <= self.min_pop)
+                        left_population.size <= self.min_pop)
 
         if is_left_leaf:
             node.left_child = self.get_leaf_child(node, left_population)
@@ -121,7 +119,7 @@ class Isolation_Random_Tree():
             self.fit_node(node.left_child)
 
         is_right_leaf = (node.depth + 1 >= self.max_depth or
-                         len(right_population) <= self.min_pop)
+                         right_population.size <= self.min_pop)
 
         if is_right_leaf:
             node.right_child = self.get_leaf_child(node, right_population)
