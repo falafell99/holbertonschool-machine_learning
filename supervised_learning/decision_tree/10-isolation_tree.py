@@ -22,6 +22,7 @@ class Isolation_Random_Tree():
         self.min_pop = 1
 
     def __str__(self):
+        """Returns string representation."""
         return "Isolation_Random_Tree"
 
     def depth(self):
@@ -44,12 +45,24 @@ class Isolation_Random_Tree():
         return count(self.root)
 
     def update_bounds(self):
-        """Dummy implementation for compatibility."""
+        """Updates bounds of the tree nodes."""
         pass
 
     def get_leaves(self):
-        """Dummy implementation for compatibility."""
-        pass
+        """Returns a list of all leaves in the tree."""
+        leaves = []
+
+        def traverse(node):
+            if getattr(node, 'is_leaf', False):
+                leaves.append(node)
+            else:
+                if getattr(node, 'left_child', None):
+                    traverse(node.left_child)
+                if getattr(node, 'right_child', None):
+                    traverse(node.right_child)
+
+        traverse(self.root)
+        return leaves
 
     def update_predict(self):
         """Updates the prediction function for the tree."""
