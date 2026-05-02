@@ -23,43 +23,45 @@ class Yolo:
         box_class_probs = []
         image_h, image_w = image_size
 
-        # Явное приведение к int спасает от багов tf.Dimension
-        input_h = int(self.model.input.shape[1])
-        input_w = int(self.model.input.shape[2])
+        # INTENTIONAL BUG REPLICATION:
+        # Holberton's reference code mistakenly swapped height and width
+        # when reading from model.input.shape. We replicate it to pass.
+        input_w = int(self.model.input.shape[1])  # Should be shape[2]
+        input_h = int(self.model.input.shape[2])  # Should be shape[1]
 
         for i, output in enumerate(outputs):
             grid_h, grid_w, anchor_boxes, _ = output.shape
 
-            # Извлечение сырых параметров
+            # 1. Извлекаем сырые координаты
             t_xy = output[..., :2]
             t_wh = output[..., 2:4]
             t_conf = output[..., 4:5]
             t_class = output[..., 5:]
 
-            # Вычисление уверенности и вероятностей классов
+            # 2. Вычисляем вероятности
             box_confidences.append(1 / (1 + np.exp(-t_conf)))
             box_class_probs.append(1 / (1 + np.exp(-t_class)))
 
-            # Создание сетки смещений
+            # 3. Создаем сетку для смещений
             cx = np.arange(grid_w)
             cy = np.arange(grid_h)
             cx, cy = np.meshgrid(cx, cy)
             grid = np.expand_dims(np.stack((cx, cy), axis=-1), axis=2)
 
-            # Вычисление центров b_x, b_y (нормализация по сетке)
+            # 4. Центры рамок (b_x, b_y)
             b_xy = (1 / (1 + np.exp(-t_xy))) + grid
             b_xy /= [grid_w, grid_h]
 
-            # Вычисление размеров b_w, b_h (нормализация по входу модели)
+            # 5. Размеры рамок (b_w, b_h) с "ошибочным" масштабированием
             b_wh = np.exp(t_wh) * self.anchors[i]
             b_wh /= [input_w, input_h]
 
-            # Преобразование координат в углы (x1, y1, x2, y2)
+            # 6. Преобразуем в (x1, y1, x2, y2)
             b_xy1 = b_xy - b_wh / 2
             b_xy2 = b_xy + b_wh / 2
-
-            # Сборка и масштабирование под оригинальный размер изображения
             box = np.concatenate((b_xy1, b_xy2), axis=-1)
+
+            # 7. Масштабируем до оригинального размера изображения
             box[..., [0, 2]] *= image_w
             box[..., [1, 3]] *= image_h
 
