@@ -61,34 +61,28 @@ class Yolo:
         return boxes, box_confidences, box_class_probs
 
     def filter_boxes(self, boxes, box_confidences, box_class_probs):
-        """
-        Filters boxes based on box score and class threshold.
-        """
+        """Filters boxes based on box score and class threshold."""
         filtered_boxes = []
         box_classes = []
         box_scores = []
 
-        # Мы проходим по каждому из 3 масштабов выходов (outputs)
         for i in range(len(boxes)):
-            # 1. Считаем итоговый скор: уверенность в наличии объекта * вероятность класса
+            # Calculate final score: confidence * class probability
             scores = box_confidences[i] * box_class_probs[i]
 
-            # 2. Находим индекс самого вероятного класса (argmax) и сам скор (max)
+            # Find the most likely class index and its score
             classes = np.argmax(scores, axis=-1)
             max_scores = np.max(scores, axis=-1)
 
-            # 3. Создаем маску: оставляем только те рамки, где скор >= порога (self.class_t)
+            # Create a boolean mask for scores >= threshold
             mask = max_scores >= self.class_t
 
-            # 4. Применяем маску.
-            # boxes[i] имеет форму (grid_h, grid_w, anchors, 4)
-            # mask имеет форму (grid_h, grid_w, anchors)
-            # Результат: плоский массив только тех рамок (координат), где маска True
+            # Apply mask and append to lists
             filtered_boxes.append(boxes[i][mask])
-            box_classes.append(classes[mask])  # <-- Вот здесь мы убрали лишний [i]
+            box_classes.append(classes[mask])
             box_scores.append(max_scores[mask])
 
-        # 5. Сшиваем списки с разных масштабов в единые массивы
+        # Concatenate results from all output scales into single arrays
         filtered_boxes = np.concatenate(filtered_boxes, axis=0)
         box_classes = np.concatenate(box_classes, axis=0)
         box_scores = np.concatenate(box_scores, axis=0)
