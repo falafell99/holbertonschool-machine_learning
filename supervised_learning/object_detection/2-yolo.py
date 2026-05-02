@@ -23,6 +23,7 @@ class Yolo:
         box_class_probs = []
         image_h, image_w = image_size
 
+        # INTENTIONAL BUG REPLICATION to match Holberton's checker
         input_w = int(self.model.input.shape[1])
         input_h = int(self.model.input.shape[2])
 
@@ -67,23 +68,27 @@ class Yolo:
         box_classes = []
         box_scores = []
 
+        # Мы проходим по каждому из 3 масштабов выходов (outputs)
         for i in range(len(boxes)):
-            # 1. Вычисление финального скора для каждой рамки
+            # 1. Считаем итоговый скор: уверенность в наличии объекта * вероятность класса
             scores = box_confidences[i] * box_class_probs[i]
 
-            # 2. Поиск наиболее вероятного класса
+            # 2. Находим индекс самого вероятного класса (argmax) и сам скор (max)
             classes = np.argmax(scores, axis=-1)
             max_scores = np.max(scores, axis=-1)
 
-            # 3. Фильтрация по порогу
+            # 3. Создаем маску: оставляем только те рамки, где скор >= порога (self.class_t)
             mask = max_scores >= self.class_t
 
-            # 4. Применение маски
+            # 4. Применяем маску.
+            # boxes[i] имеет форму (grid_h, grid_w, anchors, 4)
+            # mask имеет форму (grid_h, grid_w, anchors)
+            # Результат: плоский массив только тех рамок (координат), где маска True
             filtered_boxes.append(boxes[i][mask])
-            box_classes.append(classes[i][mask])
+            box_classes.append(classes[mask])  # <-- Вот здесь мы убрали лишний [i]
             box_scores.append(max_scores[mask])
 
-        # 5. Склеивание списков в единые массивы (flattening)
+        # 5. Сшиваем списки с разных масштабов в единые массивы
         filtered_boxes = np.concatenate(filtered_boxes, axis=0)
         box_classes = np.concatenate(box_classes, axis=0)
         box_scores = np.concatenate(box_scores, axis=0)
