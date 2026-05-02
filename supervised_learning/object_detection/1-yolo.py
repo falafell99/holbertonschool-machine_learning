@@ -45,54 +45,59 @@ class Yolo:
         box_confidences = []
         box_class_probs = []
         image_height, image_width = image_size
+        
+        # Dimensions the model was trained on (e.g., 416x416)
+        model_h = self.model.input.shape[1]
+        model_w = self.model.input.shape[2]
 
         for i, output in enumerate(outputs):
             grid_height, grid_width, anchor_boxes, _ = output.shape
 
-            # Create a grid of offsets (cx, cy)
+            # 1. Create grid of offsets (c_x, c_y)
             cx = np.arange(grid_width).reshape(1, grid_width)
             cx = np.repeat(cx, grid_height, axis=0)
             cy = np.arange(grid_height).reshape(grid_height, 1)
             cy = np.repeat(cy, grid_width, axis=1)
 
-            # Combine offsets into a grid and shape for broadcasting
             grid = np.stack((cx, cy), axis=-1)
             grid = np.expand_dims(grid, axis=2)
 
-            # Extract box parameters: (t_x, t_y, t_w, t_h)
+            # 2. Extract raw coordinates
             t_xy = output[..., :2]
             t_wh = output[..., 2:4]
 
-            # Apply sigmoid to t_x and t_y and add grid offsets
+            # 3. Calculate Center Coordinates (b_x, b_y)
+            # Apply sigmoid and add grid offsets
             b_xy = (1 / (1 + np.exp(-t_xy))) + grid
-            # Normalize center coordinates to the scale [0, 1]
+            
+            # Normalize centers against the grid size 
+            # to get relative positions (0 to 1)
             b_xy /= [grid_width, grid_height]
 
-            # Decode width and height using anchors
+            # 4. Calculate Dimensions (b_w, b_h)
+            # Anchors are given relative to the model input size (416x416)
             anchors_xy = self.anchors[i]
-            # Normalize anchor dimensions
-            model_input_width = self.model.input.shape[2]
-            model_input_height = self.model.input.shape[1]
-            anchors_xy = anchors_xy / [model_input_width, model_input_height]
-
             b_wh = np.exp(t_wh) * anchors_xy
+            
+            # Normalize dimensions against the model input size (0 to 1)
+            b_wh /= [model_w, model_h]
 
-            # Convert from center (bx, by, bw, bh) to corners (x1, y1, x2, y2)
+            # 5. Convert to Corner Coordinates (x1, y1, x2, y2)
+            # relative to the normalized space
             b_xy1 = b_xy - (b_wh / 2)
             b_xy2 = b_xy + (b_wh / 2)
             box = np.concatenate((b_xy1, b_xy2), axis=-1)
 
-            # Scale back to the original image dimensions
+            # 6. Scale back up to the ORIGINAL image dimensions
             box[..., [0, 2]] *= image_width
             box[..., [1, 3]] *= image_height
 
             boxes.append(box)
 
-            # Extract and apply sigmoid to objectness confidence
+            # Extract confidences and class probabilities
             box_confidence = 1 / (1 + np.exp(-output[..., 4:5]))
             box_confidences.append(box_confidence)
 
-            # Extract and apply sigmoid to class probabilities
             box_class_prob = 1 / (1 + np.exp(-output[..., 5:]))
             box_class_probs.append(box_class_prob)
 
