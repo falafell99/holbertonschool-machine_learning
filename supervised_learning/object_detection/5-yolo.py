@@ -5,6 +5,7 @@ import tensorflow as tf
 import numpy as np
 import cv2
 import os
+from PIL import Image
 
 
 class Yolo:
@@ -130,21 +131,31 @@ class Yolo:
         return images, image_paths
 
     def preprocess_images(self, images):
-        """Resizes and rescales images for the Darknet model."""
+        """Resizes and rescales images for the Darknet model using PIL."""
         pimages = []
         image_shapes = []
-
         input_h = int(self.model.input.shape[1])
         input_w = int(self.model.input.shape[2])
 
         for image in images:
+            # Сохраняем оригинальные размеры
             image_shapes.append([image.shape[0], image.shape[1]])
-            resized = cv2.resize(
-                image,
-                (input_w, input_h),
-                interpolation=cv2.INTER_CUBIC
-            )
-            rescaled = resized / 255.0
+
+            # Конвертируем NumPy массив (OpenCV формат) в объект PIL Image
+            pil_img = Image.fromarray(image)
+
+            # Делаем ресайз методами библиотеки PIL (BICUBIC)
+            # В старых версиях PIL использовался Image.BICUBIC,
+            # в новых (Pillow 10+) Image.Resampling.BICUBIC.
+            # Мы используем Image.BICUBIC для совместимости с чекером.
+            if hasattr(Image, 'Resampling'):
+                resized_pil = pil_img.resize((input_w, input_h), resample=Image.Resampling.BICUBIC)
+            else:
+                resized_pil = pil_img.resize((input_w, input_h), resample=Image.BICUBIC)
+
+            # Конвертируем обратно в NumPy и нормализуем
+            resized_np = np.array(resized_pil)
+            rescaled = resized_np / 255.0
             pimages.append(rescaled)
 
         return np.array(pimages), np.array(image_shapes)
