@@ -22,10 +22,10 @@ class NST:
             raise TypeError(
                 "content_image must be a numpy.ndarray with shape (h, w, 3)")
 
-        if type(alpha) not in [int, float] or alpha < 0:
+        if not isinstance(alpha, (int, float)) or alpha < 0:
             raise TypeError("alpha must be a non-negative number")
 
-        if type(beta) not in [int, float] or beta < 0:
+        if not isinstance(beta, (int, float)) or beta < 0:
             raise TypeError("beta must be a non-negative number")
 
         self.style_image = self.scale_image(style_image)
@@ -193,6 +193,9 @@ class NST:
                 "generated_image must be a tensor of shape {}".format(s))
 
         with tf.GradientTape() as tape:
+            # КРИТИЧЕСКИЙ ФИКС ДЛЯ TENSORFLOW 2.x
+            # Заставляем магнитофон следить за обычным тензором.
+            tape.watch(generated_image)
             J_total, J_content, J_style = self.total_cost(generated_image)
 
         gradients = tape.gradient(J_total, generated_image)
