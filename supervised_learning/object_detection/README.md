@@ -1,9 +1,10 @@
-# Object Detection with YOLOv3
+# Neural Style Transfer (NST)
 
-Implementation of the YOLO (You Only Look Once) v3 algorithm from scratch using TensorFlow/Keras. 
+This project implements the Neural Style Transfer algorithm from scratch using TensorFlow and a pre-trained VGG19 Convolutional Neural Network. NST optimizes a generated image to minimize content loss with a base image and style loss with a reference artwork.
 
-## Structure
-* `0-yolo.py` - Initialization of the YOLO v3 model architecture, loading pre-trained weights, anchor boxes, and class definitions.
+## Project Structure and Pipeline
 
-## Configuration
-The architecture utilizes the Darknet backbone to output feature maps at three different scales, making it highly robust for detecting both large and small objects in real-time environments.
+* `0-neural_style.py`: Core `NST` class initialization. 
+  - Defines the specific VGG19 activation layers used for style extraction (`block1_conv1` through `block5_conv1`) and content extraction (`block5_conv2`).
+  - Implements defensive programming for robust input validation.
+  - Contains `scale_image`, a static method that resizes images to a maximum dimension of 512 pixels using bicubic interpolation and normalizes pixel values to the `[0, 1]` range to prevent Out-Of-Memory (OOM) errors and exploding gradients during the optimization process.
