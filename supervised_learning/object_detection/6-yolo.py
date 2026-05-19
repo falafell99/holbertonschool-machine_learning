@@ -133,8 +133,8 @@ class Yolo:
         """Resizes and rescales images for the Darknet model."""
         pimages = []
         image_shapes = []
-        input_h = int(self.model.input.shape[1])
-        input_w = int(self.model.input.shape[2])
+        input_w = int(self.model.input.shape[1])
+        input_h = int(self.model.input.shape[2])
 
         for image in images:
             image_shapes.append([image.shape[0], image.shape[1]])
@@ -170,7 +170,7 @@ class Yolo:
         if key == ord('s'):
             if not os.path.exists('detections'):
                 os.mkdir('detections')
-            out_path = os.path.join('detections', os.path.basename(file_name))
-            cv2.imwrite(out_path, image)
+            save_path = os.path.join('detections', file_name)
+            cv2.imwrite(save_path, image)
 
         cv2.destroyAllWindows()
