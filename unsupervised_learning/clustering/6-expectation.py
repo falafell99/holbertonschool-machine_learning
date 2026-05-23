@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
-"""Module to calculate the expectation step in the EM algorithm"""
+"""Module to calculate the expectation step in the EM algorithm for a GMM"""
 import numpy as np
 pdf = __import__('5-pdf').pdf
 
 
 def expectation(X, pi, m, S):
     """
-    Calculates the expectation step of the EM algorithm.
+    Calculates the expectation step in the EM algorithm for a GMM.
     """
     if not isinstance(X, np.ndarray) or len(X.shape) != 2:
         return None, None
@@ -27,19 +27,26 @@ def expectation(X, pi, m, S):
     if not np.isclose(np.sum(pi), 1.0):
         return None, None
 
-    g = np.zeros((k, n))
+    try:
+        g = np.zeros((k, n))
 
-    # Single allowed loop over clusters
-    for j in range(k):
-        P = pdf(X, m[j], S[j])
-        if P is None:
-            return None, None
-        g[j] = pi[j] * P
+        # 1. Вычисляем числитель (совместную вероятность) для каждого кластера
+        for j in range(k):
+            P = pdf(X, m[j], S[j])
+            if P is None:
+                return None, None
+            g[j] = pi[j] * P
 
-    marginal = np.sum(g, axis=0)
+        # 2. Вычисляем знаменатель (маржинальную вероятность)
+        marginal = np.sum(g, axis=0)
 
-    l = np.sum(np.log(marginal))
+        # 3. Вычисляем логарифмическое правдоподобие (Log-Likelihood)
+        # Заменяем опасную переменную 'l' на 'log_likelihood'
+        log_likelihood = np.sum(np.log(marginal))
 
-    g = g / marginal
+        # 4. Вычисляем итоговые апостериорные вероятности (Posterior)
+        g = g / marginal
 
-    return g, l
+        return g, log_likelihood
+    except Exception:
+        return None, None
