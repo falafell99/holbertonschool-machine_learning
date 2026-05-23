@@ -15,15 +15,15 @@ def initialize(X, k):
 
     n, d = X.shape
 
-    # 1. pi: Равномерное начальное распределение вероятностей для каждого кластера
+    # pi: Priors for each cluster, initialized evenly
     pi = np.full(shape=(k,), fill_value=1/k)
 
-    # 2. m: Центроиды инициализируются с помощью алгоритма K-means
+    # m: Centroid means initialized with K-means
     m, _ = kmeans(X, k)
     if m is None:
         return None, None, None
 
-    # 3. S: Ковариационные матрицы инициализируются как единичные матрицы
+    # S: Covariance matrices initialized as identity matrices
     S = np.tile(np.identity(d), (k, 1, 1))
 
     return pi, m, S
