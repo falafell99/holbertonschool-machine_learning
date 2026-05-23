@@ -21,39 +21,34 @@ def expectation_maximization(X, k, iterations=1000, tol=1e-5, verbose=False):
     if type(verbose) is not bool:
         return None, None, None, None, None
 
-    # Step 1: Initialize parameters
     pi, m, S = initialize(X, k)
     if pi is None or m is None or S is None:
         return None, None, None, None, None
 
     l_prev = 0
 
-    # Step 2: The single allowed loop of EM algorithm
     for i in range(iterations):
-        # Expectation Step
         g, log_l = expectation(X, pi, m, S)
         if g is None or log_l is None:
             return None, None, None, None, None
 
-        # Print verbose info at specific steps
         if verbose and (i % 10 == 0):
-            print("Log Likelihood after {} iterations: {:.5f}".format(i, log_l))
+            # Перенесли аргументы на новую строку, чтобы уложиться в 79 символов
+            print("Log Likelihood after {} iterations: {:.5f}".format(
+                i, log_l))
 
-        # Check early stopping condition (Convergence)
         if i > 0 and abs(log_l - l_prev) <= tol:
             if verbose and (i % 10 != 0):
                 print("Log Likelihood after {} iterations: {:.5f}".format(
                     i, log_l))
             return pi, m, S, g, log_l
 
-        # Maximization Step
         pi, m, S = maximization(X, g)
         if pi is None or m is None or S is None:
             return None, None, None, None, None
 
         l_prev = log_l
 
-    # Step 3: Final Expectation evaluation after reaching max iterations
     g, log_l = expectation(X, pi, m, S)
     if g is None or log_l is None:
         return None, None, None, None, None
