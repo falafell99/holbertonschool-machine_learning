@@ -33,7 +33,6 @@ def expectation_maximization(X, k, iterations=1000, tol=1e-5, verbose=False):
             return None, None, None, None, None
 
         if verbose and (i % 10 == 0):
-            # Перенесли аргументы на новую строку, чтобы уложиться в 79 символов
             print("Log Likelihood after {} iterations: {:.5f}".format(
                 i, log_l))
 
