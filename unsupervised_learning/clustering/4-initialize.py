@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
-"""Module to initialize variables for a Gaussian Mixture Model"""
+"""Module to initialize variables of a Gaussian Mixture Model"""
 import numpy as np
 kmeans = __import__('1-kmeans').kmeans
 
 
 def initialize(X, k):
     """
-    Initializes variables for a Gaussian Mixture Model.
+    Initializes variables of a Gaussian Mixture Model.
     """
     if not isinstance(X, np.ndarray) or len(X.shape) != 2:
         return None, None, None
@@ -15,7 +15,7 @@ def initialize(X, k):
 
     n, d = X.shape
 
-    # pi: Priors for each cluster, initialized evenly
+    # pi: Priors of each cluster, initialized evenly
     pi = np.full(shape=(k,), fill_value=1/k)
 
     # m: Centroid means initialized with K-means
