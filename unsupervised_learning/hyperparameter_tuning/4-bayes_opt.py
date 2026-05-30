@@ -35,21 +35,16 @@ class BayesianOptimization:
             Y_best = np.max(self.gp.Y)
             imp = mu - Y_best - self.xsi
 
-        # Инициализация массивов Z и EI нулями
         Z = np.zeros(sigma.shape)
         ei = np.zeros(sigma.shape)
-
-        # Маска для избежания деления на ноль, если sigma равна 0
         mask = sigma > 0
 
-        # Вычисление Z (стандартизированное улучшение)
         Z[mask] = imp[mask] / sigma[mask]
 
-        # Вычисление EI
-        ei[mask] = (imp[mask] * norm.cdf(Z[mask]) +
-                    sigma[mask] * norm.pdf(Z[mask]))
+        # Перенесли оператор '+' на новую строку согласно современному PEP8
+        ei[mask] = (imp[mask] * norm.cdf(Z[mask])
+                    + sigma[mask] * norm.pdf(Z[mask]))
 
-        # Выбор точки с самым высоким EI
         X_next = self.X_s[np.argmax(ei)]
 
         return X_next, ei
