@@ -54,22 +54,14 @@ class BayesianOptimization:
         Optimizes the black-box function.
         """
         for _ in range(iterations):
-            # 1. Находим самую перспективную точку
             X_next, _ = self.acquisition()
 
-            # 2. Условие ранней остановки:
-            # Если алгоритм предложил точку, которую мы УЖЕ проверяли,
-            # значит мы сошлись к глобальному оптимуму (или застряли).
             if X_next in self.gp.X:
                 break
 
-            # 3. Вычисляем реальное значение нашей функции (Обучаем модель)
             Y_next = self.f(X_next)
-
-            # 4. Обновляем Гауссовский процесс новыми знаниями
             self.gp.update(X_next, Y_next)
 
-        # После завершения цикла (или ранней остановки) находим лучший результат
         if self.minimize:
             idx = np.argmin(self.gp.Y)
         else:
