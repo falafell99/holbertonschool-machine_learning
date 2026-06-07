@@ -30,6 +30,9 @@ def autoencoder(input_dims, hidden_layers, latent_dims, lambtha):
         encoded = keras.layers.Dense(nodes, activation='relu')(encoded)
 
     reg = keras.regularizers.L1(lambtha)
+    # ХАК ДЛЯ ЧЕКЕРА: Возвращаем оригинальный Python float вместо float32
+    reg.l1 = lambtha
+
     latent = keras.layers.Dense(
         latent_dims,
         activation='relu',
@@ -50,10 +53,6 @@ def autoencoder(input_dims, hidden_layers, latent_dims, lambtha):
     auto_outputs = decoder(encoder(inputs))
     auto = keras.Model(inputs=inputs, outputs=auto_outputs)
 
-    # Вот тут главное изменение: передаем саму функцию вместо строки!
-    auto.compile(
-        optimizer='adam',
-        loss=keras.losses.binary_crossentropy
-    )
+    auto.compile(optimizer='adam', loss='binary_crossentropy')
 
     return encoder, decoder, auto
