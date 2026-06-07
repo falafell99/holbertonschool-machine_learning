@@ -13,12 +13,13 @@ def autoencoder(input_dims, hidden_layers, latent_dims):
     mu = keras.layers.Dense(latent_dims, activation=None)(encoded)
     log_var = keras.layers.Dense(latent_dims, activation=None)(encoded)
 
-    def sampling(args):
-        mu_, log_var_ = args
-        eps = keras.backend.random_normal(shape=keras.backend.shape(mu_))
-        return mu_ + keras.backend.exp(log_var_ / 2) * eps
+    z = keras.layers.Lambda(
+        lambda args: args[0] + keras.backend.exp(args[1] / 2) *
+        keras.backend.random_normal(
+            shape=(keras.backend.shape(args[0])[0], latent_dims)
+        )
+    )([mu, log_var])
 
-    z = keras.layers.Lambda(sampling)([mu, log_var])
     encoder = keras.Model(inputs=inputs, outputs=[z, mu, log_var])
 
     latent_inputs = keras.Input(shape=(latent_dims,))
@@ -28,15 +29,20 @@ def autoencoder(input_dims, hidden_layers, latent_dims):
     outputs = keras.layers.Dense(input_dims, activation='sigmoid')(decoded)
     decoder = keras.Model(inputs=latent_inputs, outputs=outputs)
 
-    auto_outputs = decoder(encoder(inputs)[0])
-    auto = keras.Model(inputs=inputs, outputs=auto_outputs)
+    auto_inputs = keras.Input(shape=(input_dims,))
+    z_out, mu_out, log_var_out = encoder(auto_inputs)
+    auto_outputs = decoder(z_out)
+    auto = keras.Model(inputs=auto_inputs, outputs=auto_outputs)
 
-    def vae_loss(x, x_decoded):
-        rec = keras.losses.binary_crossentropy(x, x_decoded) * input_dims
-        kl = -0.5 * keras.backend.sum(
-            1 + log_var - keras.backend.square(mu)
-            - keras.backend.exp(log_var), axis=1)
-        return keras.backend.mean(rec + kl)
-
-    auto.compile(optimizer='adam', loss=vae_loss)
+    rec_loss = keras.backend.mean(
+        keras.losses.binary_crossentropy(auto_inputs, auto_outputs)
+    ) * input_dims
+    kl_loss = -0.5 * keras.backend.mean(
+        keras.backend.sum(
+            1 + log_var_out - keras.backend.square(mu_out)
+            - keras.backend.exp(log_var_out), axis=1
+        )
+    )
+    auto.add_loss(rec_loss + kl_loss)
+    auto.compile(optimizer='adam')
     return encoder, decoder, auto
