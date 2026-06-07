@@ -6,14 +6,14 @@ import tensorflow.keras as keras
 def autoencoder(input_dims, hidden_layers, latent_dims):
     """
     Creates a vanilla autoencoder model.
-    
+
     Args:
         input_dims (int): The dimensions of the model input.
         hidden_layers (list): A list containing the number of nodes for each
             hidden layer in the encoder, respectively. The hidden layers
             should be reversed for the decoder.
         latent_dims (int): The dimensions of the latent space representation.
-        
+
     Returns:
         tuple: (encoder, decoder, auto)
         - encoder is the encoder model
