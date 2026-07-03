@@ -25,8 +25,8 @@ def word2vec_model(sentences, vector_size=100, min_count=5, window=5,
     # Map cbow boolean to sg parameter (0 for CBOW, 1 for Skip-gram)
     sg = 0 if cbow else 1
 
-    try:
-        # Gensim 4.0.0 and above
+    # Use gensim.__version__ to strictly determine the API to use
+    if int(gensim.__version__.split('.')[0]) >= 4:
         model = gensim.models.Word2Vec(sentences=sentences,
                                        vector_size=vector_size,
                                        min_count=min_count,
@@ -36,9 +36,7 @@ def word2vec_model(sentences, vector_size=100, min_count=5, window=5,
                                        epochs=epochs,
                                        seed=seed,
                                        workers=workers)
-    except TypeError:
-        # Fallback for older Gensim versions (< 4.0.0) where parameters
-        # 'vector_size' and 'epochs' were called 'size' and 'iter'
+    else:
         model = gensim.models.Word2Vec(sentences=sentences,
                                        size=vector_size,
                                        min_count=min_count,
