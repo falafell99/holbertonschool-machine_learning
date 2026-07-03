@@ -6,7 +6,7 @@ import gensim
 def word2vec_model(sentences, vector_size=100, min_count=5, window=5,
                    negative=5, cbow=True, epochs=5, seed=0, workers=1):
     """
-    Creates, builds, and trains a gensim word2vec model.
+    Creates and trains a gensim word2vec model.
 
     Args:
         sentences (list): A list of sentences to be trained on.
@@ -25,32 +25,28 @@ def word2vec_model(sentences, vector_size=100, min_count=5, window=5,
     # Map cbow boolean to sg parameter (0 for CBOW, 1 for Skip-gram)
     sg = 0 if cbow else 1
 
-    # 1. CREATE the model
     try:
         # Gensim 4.0.0 and above
-        model = gensim.models.Word2Vec(vector_size=vector_size,
+        model = gensim.models.Word2Vec(sentences=sentences,
+                                       vector_size=vector_size,
                                        min_count=min_count,
                                        window=window,
                                        negative=negative,
                                        sg=sg,
+                                       epochs=epochs,
                                        seed=seed,
                                        workers=workers)
     except TypeError:
-        # Fallback for older Gensim versions (< 4.0.0)
-        model = gensim.models.Word2Vec(size=vector_size,
+        # Fallback for older Gensim versions (< 4.0.0) where parameters
+        # 'vector_size' and 'epochs' were called 'size' and 'iter'
+        model = gensim.models.Word2Vec(sentences=sentences,
+                                       size=vector_size,
                                        min_count=min_count,
                                        window=window,
                                        negative=negative,
                                        sg=sg,
+                                       iter=epochs,
                                        seed=seed,
                                        workers=workers)
-
-    # 2. BUILD the vocabulary
-    model.build_vocab(sentences)
-
-    # 3. TRAIN the model
-    model.train(sentences,
-                total_examples=model.corpus_count,
-                epochs=epochs)
 
     return model
