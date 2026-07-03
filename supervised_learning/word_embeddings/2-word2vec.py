@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Module that contains the word2vec_model function."""
-from gensim.models import Word2Vec
+import gensim
 
 
 def word2vec_model(sentences, vector_size=100, min_count=5, window=5,
@@ -27,16 +27,25 @@ def word2vec_model(sentences, vector_size=100, min_count=5, window=5,
 
     try:
         # Gensim 4.0.0 and above
-        model = Word2Vec(sentences=sentences, vector_size=vector_size,
-                         min_count=min_count, window=window, negative=negative,
-                         sg=sg, epochs=epochs, seed=seed, workers=workers)
+        model = gensim.models.Word2Vec(sentences=sentences,
+                                       vector_size=vector_size,
+                                       min_count=min_count,
+                                       window=window,
+                                       negative=negative,
+                                       sg=sg,
+                                       epochs=epochs,
+                                       seed=seed,
+                                       workers=workers)
     except TypeError:
-        # Fallback for older Gensim versions (< 4.0.0) where parameters
-        # 'vector_size' and 'epochs' were called 'size' and 'iter'
-        model = Word2Vec(sentences=sentences, size=vector_size,
-                         min_count=min_count, window=window, negative=negative,
-                         sg=sg, iter=epochs, seed=seed, workers=workers)
+        # Fallback for older Gensim versions (< 4.0.0)
+        model = gensim.models.Word2Vec(sentences=sentences,
+                                       size=vector_size,
+                                       min_count=min_count,
+                                       window=window,
+                                       negative=negative,
+                                       sg=sg,
+                                       iter=epochs,
+                                       seed=seed,
+                                       workers=workers)
 
-    # Note: Word2Vec initializes and trains the model automatically upon
-    # instantiation when 'sentences' is provided.
     return model
