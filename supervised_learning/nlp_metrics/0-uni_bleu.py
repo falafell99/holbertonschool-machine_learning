@@ -16,7 +16,7 @@ def uni_bleu(references, sentence):
     """
     sen_len = len(sentence)
     ref_lengths = [len(ref) for ref in references]
-    closest_len = min(ref_lengths, key=lambda l: (abs(l - sen_len), l))
+    closest_len = min(ref_lengths, key=lambda x: (abs(x - sen_len), x))
 
     counts = {}
     for word in sentence:
