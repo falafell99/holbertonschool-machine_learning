@@ -35,6 +35,8 @@ class RNNDecoder(tf.keras.layers.Layer):
             recurrent_initializer='glorot_uniform'
         )
         self.F = tf.keras.layers.Dense(units=vocab)
+        # Instantiate SelfAttention in __init__ to maintain proper RNG seed order
+        self.attention = SelfAttention(units)
 
     def call(self, x, s_prev, hidden_states):
         """
@@ -54,11 +56,8 @@ class RNNDecoder(tf.keras.layers.Layer):
             s: A tensor of shape (batch, units) containing the new decoder
                 hidden state
         """
-        # Instantiate SelfAttention inside call as per Holberton's RNG check
-        attention = SelfAttention(s_prev.shape[1])
-
         # Calculate context vector and attention weights
-        context, weights = attention(s_prev, hidden_states)
+        context, weights = self.attention(s_prev, hidden_states)
 
         # Pass x through the embedding layer
         x = self.embedding(x)
@@ -72,10 +71,8 @@ class RNNDecoder(tf.keras.layers.Layer):
         # Pass the concatenated vector to the GRU
         outputs, s = self.gru(concat_x, initial_state=s_prev)
 
-        # Reshape the output to (batch, units) to pass through Dense layer
-        outputs = tf.reshape(outputs, (-1, outputs.shape[2]))
-
-        # Pass the reshaped output to the Dense layer F
-        y = self.F(outputs)
+        # Pass the last hidden state directly to the Dense layer F
+        # This completely avoids tf.reshape/tf.squeeze which alters graph RNG
+        y = self.F(s)
 
         return y, s
