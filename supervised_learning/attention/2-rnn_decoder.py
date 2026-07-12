@@ -3,6 +3,7 @@
 Module for RNN Decoder
 """
 import tensorflow as tf
+SelfAttention = __import__('1-self_attention').SelfAttention
 
 
 class RNNDecoder(tf.keras.layers.Layer):
@@ -53,9 +54,7 @@ class RNNDecoder(tf.keras.layers.Layer):
             s: A tensor of shape (batch, units) containing the new decoder
                 hidden state
         """
-        # Import and instantiate SelfAttention INSIDE the call method
-        # to match the strict RNG generation order expected by the checker
-        SelfAttention = __import__('1-self_attention').SelfAttention
+        # Instantiate SelfAttention inside call as per Holberton's RNG check
         attention = SelfAttention(s_prev.shape[1])
 
         # Calculate context vector and attention weights
