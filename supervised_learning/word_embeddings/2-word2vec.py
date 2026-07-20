@@ -1,38 +1,44 @@
 #!/usr/bin/env python3
-"""Module that contains the word2vec_model function."""
-import gensim
+"""
+Module for training a Word2Vec model
+"""
+from gensim.models import Word2Vec
 
 
 def word2vec_model(sentences, vector_size=100, min_count=5, window=5,
-                   negative=5, cbow=True, epochs=5, seed=0, workers=1):
+                    negative=5, cbow=True, epochs=5, seed=0, workers=1):
     """
-    Creates and trains a gensim word2vec model.
-
+    Creates, builds and trains a gensim word2vec model
     Args:
-        sentences (list): A list of sentences to be trained on.
-        vector_size (int): The dimensionality of the embedding layer.
-        min_count (int): Minimum number of occurrences of a word for use.
-        window (int): Max distance between current and predicted word.
-        negative (int): The size of negative sampling.
-        cbow (bool): True is for CBOW; False is for Skip-gram.
-        epochs (int): The number of iterations to train over.
-        seed (int): The seed for the random number generator.
-        workers (int): The number of worker threads to train the model.
-
+        sentences: A list of sentences to be trained on
+        vector_size: The dimensionality of the embedding layer
+        min_count: The minimum number of occurrences of a word for use
+            in training
+        window: The maximum distance between the current and predicted
+            word within a sentence
+        negative: The size of negative sampling
+        cbow: A boolean to determine the training type; True is for CBOW;
+            False is for Skip-gram
+        epochs: The number of iterations to train over
+        seed: The seed for the random number generator
+        workers: The number of worker threads to train the model
     Returns:
-        The trained Word2Vec model.
+        The trained model
     """
     sg = 0 if cbow else 1
-    model = gensim.models.Word2Vec(
+    model = Word2Vec(
         sentences=sentences,
         vector_size=vector_size,
         min_count=min_count,
         window=window,
         negative=negative,
         sg=sg,
-        epochs=epochs,
         seed=seed,
-        workers=workers,
-        hashfxn=hash
+        workers=workers
+    )
+    model.train(
+        sentences,
+        total_examples=model.corpus_count,
+        epochs=epochs
     )
     return model
