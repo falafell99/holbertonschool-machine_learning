@@ -61,7 +61,8 @@ class Encoder(tf.keras.layers.Layer):
         x *= tf.math.sqrt(tf.cast(self.dm, tf.float32))
 
         # Cast positional encoding to tensor and slice to seq_len
-        # Adding tf.newaxis ensures robust broadcasting over the batch dimension
+        # Adding tf.newaxis ensures robust broadcasting
+        # over the batch dimension
         pos_encoding = tf.constant(self.positional_encoding,
                                    dtype=tf.float32)
         pos_encoding = pos_encoding[tf.newaxis, :seq_len, :]
