@@ -15,7 +15,7 @@ class Dataset:
         """
         Class constructor
         """
-        # Load dataset using the provided setup script instead of tfds
+        # Load dataset using the provided setup script
         data_train, data_valid = load_pt2en()
 
         # Build tokenizers using transformers
@@ -52,34 +52,48 @@ class Dataset:
         """
         Builds sub-word tokenizers for the dataset
         """
-        # Use HuggingFace transformers as per updated ALX curriculum
-        tokenizer_pt = transformers.AutoTokenizer.from_pretrained(
-            'neuralmind/bert-base-portuguese-cased',
-            use_fast=True,
-            clean_up_tokenization_spaces=True
+        # Load a base tokenizer (cached locally in ALX environment)
+        base_tokenizer = transformers.AutoTokenizer.from_pretrained(
+            'bert-base-uncased', use_fast=True
         )
-        tokenizer_en = transformers.AutoTokenizer.from_pretrained(
-            'bert-base-uncased',
-            use_fast=True,
-            clean_up_tokenization_spaces=True
+
+        # Create iterators using batches to make training lightning fast
+        def pt_iterator():
+            for pt, _ in data.batch(1000).as_numpy_iterator():
+                yield [s.decode('utf-8') for s in pt]
+
+        def en_iterator():
+            for _, en in data.batch(1000).as_numpy_iterator():
+                yield [s.decode('utf-8') for s in en]
+
+        # Train new tokenizers from iterators with max vocab size 2**13 (8192)
+        vocab_size = 2 ** 13
+        tokenizer_pt = base_tokenizer.train_new_from_iterator(
+            pt_iterator(), vocab_size
         )
+        tokenizer_en = base_tokenizer.train_new_from_iterator(
+            en_iterator(), vocab_size
+        )
+
         return tokenizer_pt, tokenizer_en
 
     def encode(self, pt, en):
         """
         Encodes a translation into tokens
         """
-        # Convert tensors to string (transformers expect Python strings)
+        # Convert tensors to strings
         pt_text = pt.numpy().decode('utf-8')
         en_text = en.numpy().decode('utf-8')
 
-        # Encode without adding special [CLS]/[SEP] tokens
+        # Encode text using the newly trained tokenizers
         pt_encoded = self.tokenizer_pt.encode(
-            pt_text, add_special_tokens=False)
+            pt_text, add_special_tokens=False
+        )
         en_encoded = self.tokenizer_en.encode(
-            en_text, add_special_tokens=False)
+            en_text, add_special_tokens=False
+        )
 
-        # Add vocab_size as start token and vocab_size + 1 as end token
+        # Prepend vocab_size (start) and append vocab_size + 1 (end)
         pt_tokens = [self.tokenizer_pt.vocab_size] + \
             pt_encoded + [self.tokenizer_pt.vocab_size + 1]
 
@@ -93,7 +107,8 @@ class Dataset:
         TensorFlow wrapper for the encode instance method
         """
         result_pt, result_en = tf.py_function(
-            self.encode, [pt, en], [tf.int64, tf.int64])
+            self.encode, [pt, en], [tf.int64, tf.int64]
+        )
         result_pt.set_shape([None])
         result_en.set_shape([None])
         return result_pt, result_en
