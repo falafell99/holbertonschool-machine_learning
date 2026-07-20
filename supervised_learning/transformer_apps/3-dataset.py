@@ -2,8 +2,9 @@
 """
 Dataset module for setting up the data pipeline
 """
-import tensorflow.compat.v2 as tf
-import tensorflow_datasets as tfds
+import tensorflow as tf
+import transformers
+from setup import load_pt2en
 
 
 class Dataset:
@@ -14,15 +15,14 @@ class Dataset:
         """
         Class constructor
         """
-        data_train, data_valid = tfds.load(
-            'ted_hrlr_translate/pt_to_en',
-            split=['train', 'validation'],
-            as_supervised=True
-        )
+        # Load dataset using the provided setup script instead of tfds
+        data_train, data_valid = load_pt2en()
 
+        # Build tokenizers using transformers
         self.tokenizer_pt, self.tokenizer_en = \
             self.tokenize_dataset(data_train)
 
+        # Map the encoding function over the datasets
         self.data_train = data_train.map(self.tf_encode)
         self.data_valid = data_valid.map(self.tf_encode)
 
@@ -52,23 +52,40 @@ class Dataset:
         """
         Builds sub-word tokenizers for the dataset
         """
-        STE = tfds.deprecated.text.SubwordTextEncoder
-        tokenizer_pt = STE.build_from_corpus(
-            (pt.numpy() for pt, en in data), target_vocab_size=2**15)
-        tokenizer_en = STE.build_from_corpus(
-            (en.numpy() for pt, en in data), target_vocab_size=2**15)
+        # Use HuggingFace transformers as per updated ALX curriculum
+        tokenizer_pt = transformers.AutoTokenizer.from_pretrained(
+            'neuralmind/bert-base-portuguese-cased',
+            use_fast=True,
+            clean_up_tokenization_spaces=True
+        )
+        tokenizer_en = transformers.AutoTokenizer.from_pretrained(
+            'bert-base-uncased',
+            use_fast=True,
+            clean_up_tokenization_spaces=True
+        )
         return tokenizer_pt, tokenizer_en
 
     def encode(self, pt, en):
         """
         Encodes a translation into tokens
         """
+        # Convert tensors to string (transformers expect Python strings)
+        pt_text = pt.numpy().decode('utf-8')
+        en_text = en.numpy().decode('utf-8')
+
+        # Encode without adding special [CLS]/[SEP] tokens
+        pt_encoded = self.tokenizer_pt.encode(
+            pt_text, add_special_tokens=False)
+        en_encoded = self.tokenizer_en.encode(
+            en_text, add_special_tokens=False)
+
+        # Add vocab_size as start token and vocab_size + 1 as end token
         pt_tokens = [self.tokenizer_pt.vocab_size] + \
-            self.tokenizer_pt.encode(pt.numpy()) + \
-            [self.tokenizer_pt.vocab_size + 1]
+            pt_encoded + [self.tokenizer_pt.vocab_size + 1]
+
         en_tokens = [self.tokenizer_en.vocab_size] + \
-            self.tokenizer_en.encode(en.numpy()) + \
-            [self.tokenizer_en.vocab_size + 1]
+            en_encoded + [self.tokenizer_en.vocab_size + 1]
+
         return pt_tokens, en_tokens
 
     def tf_encode(self, pt, en):
