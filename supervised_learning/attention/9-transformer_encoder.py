@@ -57,9 +57,14 @@ class Encoder(tf.keras.layers.Layer):
         # Pass x through the embedding layer
         x = self.embedding(x)
 
-        # Cast positional encoding to float32 to match embedding dtype
-        pos_encoding = tf.cast(self.positional_encoding[:seq_len, :],
-                               dtype=tf.float32)
+        # Scale the embeddings by multiplying by the square root of dm
+        x *= tf.math.sqrt(tf.cast(self.dm, tf.float32))
+
+        # Cast positional encoding to tensor and slice to seq_len
+        # Adding tf.newaxis ensures robust broadcasting over the batch dimension
+        pos_encoding = tf.constant(self.positional_encoding,
+                                   dtype=tf.float32)
+        pos_encoding = pos_encoding[tf.newaxis, :seq_len, :]
 
         # Add positional encoding to embeddings
         x += pos_encoding
