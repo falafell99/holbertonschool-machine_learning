@@ -35,8 +35,6 @@ class RNNDecoder(tf.keras.layers.Layer):
             recurrent_initializer='glorot_uniform'
         )
         self.F = tf.keras.layers.Dense(units=vocab)
-        # Instantiate SelfAttention in __init__
-        self.attention = SelfAttention(units)
 
     def call(self, x, s_prev, hidden_states):
         """
@@ -56,25 +54,28 @@ class RNNDecoder(tf.keras.layers.Layer):
             s: A tensor of shape (batch, units) containing the new decoder
                 hidden state
         """
-        # Pass x through the embedding layer FIRST to match exact RNG expected
-        x = self.embedding(x)
+        # Instantiate SelfAttention locally as intended by the task description
+        attention = SelfAttention(s_prev.shape[1])
 
         # Calculate context vector and attention weights
-        context, weights = self.attention(s_prev, hidden_states)
+        context, weights = attention(s_prev, hidden_states)
+
+        # Pass x through the embedding layer
+        x = self.embedding(x)
 
         # Expand the context vector to have shape (batch, 1, units)
-        context_expanded = tf.expand_dims(context, 1)
+        context = tf.expand_dims(context, 1)
 
         # Concatenate context vector with x in that order
-        concat_x = tf.concat([context_expanded, x], axis=-1)
+        concat_x = tf.concat([context, x], axis=-1)
 
         # Pass the concatenated vector to the GRU
-        outputs, s = self.gru(concat_x, initial_state=s_prev)
+        y, s = self.gru(concat_x, initial_state=s_prev)
 
-        # Reshape the output to (batch, units) to pass through Dense layer
-        outputs = tf.reshape(outputs, (-1, outputs.shape[2]))
+        # Reshape the output to (batch, units) BEFORE passing to Dense layer
+        y = tf.reshape(y, (-1, y.shape[2]))
 
         # Pass the reshaped output to the Dense layer F
-        y = self.F(outputs)
+        y = self.F(y)
 
         return y, s
