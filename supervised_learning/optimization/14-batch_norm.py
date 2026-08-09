@@ -5,27 +5,33 @@ import tensorflow as tf
 
 def create_batch_norm_layer(prev, n, activation):
     """
-    Creates a batch normalization layer for a neural network in tensorflow.
-    prev: the activated output of the previous layer.
-    n: the number of nodes in the layer to be created.
-    activation: the activation function to be used on the output.
-    Returns: a tensor of the activated output for the layer.
+    Creates a batch normalization layer for a neural network in
+    tensorflow.
+
+    Args:
+        prev: the activated output of the previous layer.
+        n: the number of nodes in the layer to be created.
+        activation: the activation function to be used on the output.
+
+    Returns:
+        A tensor of the activated output for the layer.
     """
-    # Инициализатор по ТЗ
     init = tf.keras.initializers.VarianceScaling(mode='fan_avg')
 
-    # ВАЖНО: use_bias=False. Это меняет потребление Random Seed.
-    # Без этого ты получаешь -0.442, а нам нужно 0.231.
     dense = tf.keras.layers.Dense(
         units=n,
-        kernel_initializer=init,
-        use_bias=False
-    )(prev)
+        kernel_initializer=init
+    )
 
-    # BatchNormalization идет СРАЗУ после Dense
-    batch_norm = tf.keras.layers.BatchNormalization(
-        epsilon=1e-7
-    )(dense)
+    Z = dense(prev)
 
-    # Активация применяется к результату батч-норма
-    return activation(batch_norm)
+    gamma = tf.Variable(initial_value=tf.ones((1, n)), trainable=True)
+    beta = tf.Variable(initial_value=tf.zeros((1, n)), trainable=True)
+
+    mean, variance = tf.nn.moments(Z, axes=[0])
+
+    Z_norm = tf.nn.batch_normalization(
+        Z, mean, variance, beta, gamma, 1e-7
+    )
+
+    return activation(Z_norm)
