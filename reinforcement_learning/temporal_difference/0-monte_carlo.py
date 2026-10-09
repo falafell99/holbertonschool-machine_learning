@@ -6,7 +6,7 @@ import numpy as np
 
 
 def monte_carlo(env, V, policy, episodes=5000, max_steps=100, alpha=0.1,
-                 gamma=0.99):
+                gamma=0.99):
     """
     Performs the Monte Carlo algorithm
     Args:
@@ -21,30 +21,24 @@ def monte_carlo(env, V, policy, episodes=5000, max_steps=100, alpha=0.1,
     Returns:
         V, the updated value estimate
     """
-    for episode in range(episodes):
+    for i in range(episodes):
         state, _ = env.reset()
-        episode_states = []
-        episode_rewards = []
+        episode = []
 
-        for step in range(max_steps):
+        for _ in range(max_steps):
             action = policy(state)
             next_state, reward, terminated, truncated, _ = env.step(action)
-            episode_states.append(state)
-            episode_rewards.append(reward)
-            state = next_state
-
+            episode.append([state, reward])
             if terminated or truncated:
                 break
+            state = next_state
 
-        episode_states = np.array(episode_states)
-        episode_rewards = np.array(episode_rewards)
-
+        episode = np.array(episode, dtype=int)
         G = 0
-        for t in reversed(range(len(episode_states))):
-            state_t = episode_states[t]
-            reward_t = episode_rewards[t]
-            G = gamma * G + reward_t
-            if state_t not in episode_states[:t]:
-                V[state_t] = V[state_t] + alpha * (G - V[state_t])
+        for step in reversed(episode):
+            state, reward = step
+            G = gamma * G + reward
+            if state not in episode[:i, 0]:
+                V[state] = V[state] + alpha * (G - V[state])
 
     return V
